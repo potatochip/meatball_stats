@@ -52,7 +52,9 @@ def choose_variables():
 
 
 def linear():
-    # using R-squared for accuracy here
+    '''
+    linear regression. using R-squared for accuracy here
+    '''
     linear_reg = LinearRegression()
     parameters = {'normalize':(True, False)}
     clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
@@ -60,21 +62,27 @@ def linear():
     return clf.score(features, response), clf, clf.get_params()
 
 
-def k_nearest_neighbor():
+def knn():
+    '''
+    K-nearest neighbor.
+    '''
     pass
 
 
 def logistic():
+    '''
+    Logistic regression.
+    '''
     pass
 
 
-def make_plot(X, y, model, model_name, response='diagnosis'):
+def make_plot(X, y, model, test_data, model_name, response='diagnosis'):
     feature = X.columns
     # X_choice = X[feature[5]]
     # plt.scatter(X_choice, y, color='black')
     # plt.plot(X_choice, model.predict(X), color='blue', linewidth=3)
     f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
-    sns.regplot(X[feature[4]], y, data, ax=ax1)
+    sns.regplot(X[feature[4]], y, test_data, ax=ax1)
     sns.boxplot(X[feature[4]], y, color="Blues_r", ax=ax2)
     sns.residplot(X[feature[4]], (model.predict(X) - y) ** 2, color="indianred", lowess=True, ax=ax3)
     if model_name is 'linear':
@@ -93,18 +101,33 @@ def make_plot(X, y, model, model_name, response='diagnosis'):
     f.tight_layout()
     plt.savefig(model_name+'_'+feature[4], bbox_inches='tight')
 
+    # Multi-variable correlation significance level
+    f, ax = plt.subplots(figsize=(10, 10))
+    cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
+                              "#FFE6F8", "#C71585", "#8B0000"], as_cmap=True)
+    sns.corrplot(test_data, annot=False, diag_names=False, cmap=cmap)
+    ax.grid(False)
+    ax.set_title('Multi-variable correlation significance level')
+    plt.savefig(model_name+'_multi-variable_correlation', bbox_inches='tight')
+
+    # complete coefficient plot - believe this is only for linear regression
+    sns.coefplot("diagnosis ~ "+' + '.join(features), test_data, intercept=True)
+    plt.xticks(rotation='vertical')
+    plt.savefig(model_name+'_coefficient_effects', bbox_inches='tight')
+
+
 
 def main():
-    X_train, X_test, y_train, y_test = train_test_split(features, response)
+    X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
 
     estimator_df = estimator_database()
     for estimator in estimators:
         if estimator is linear:
             rsquared, model, parameters = linear()
             evaluation_metrics = [rsquared, 0, 0, 0, 0, parameters]
-            make_plot(X_test, y_test, model, model_name='linear', response='diagnosis')
-        elif estimator is k_nearest_neighbor:
-            pass
+            make_plot(X_test, y_test, model, data_test, model_name='linear', response='diagnosis')
+        elif estimator is knn:
+            print 
         elif estimator is logistic:
             pass
         else:
@@ -117,7 +140,7 @@ if __name__ == '__main__':
     try:
         sys.argv[1]
     except:
-        estimators = [linear, k_nearest_neighbor, logistic]
+        estimators = [linear, knn, logistic]
         features, response, data = prep_dataset()
     else:
         estimators = sys.argv[1]

@@ -30,11 +30,11 @@ df.dropna(inplace=True)
 df.head()
 
 
-# In[326]:
+# In[389]:
 
 features = df.drop('diagnosis', axis=1)
 response = df.diagnosis
-features = sm.add_constant(features)
+# features = sm.add_constant(features)
 from sklearn.cross_validation import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(features, response)
 
@@ -207,7 +207,17 @@ clf.score(features, response)
 len((linear_reg.predict(X)- y)**2)
 
 
-# In[313]:
+# In[358]:
+
+f, ax = plt.subplots(figsize=(10, 10))
+cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
+                          "#FFE6F8", "#C71585", "#8B0000"], as_cmap=True)
+sns.corrplot(df, annot=False, diag_names=False, cmap=cmap)
+ax.grid(False)
+ax.set_title='Multi-variable correlation significance level'
 
 
+# In[400]:
+
+sns.coefplot("diagnosis ~ "+' + '.join(features), df, intercept=True, palette="Set1")
 
