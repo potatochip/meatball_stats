@@ -161,21 +161,38 @@ linear_reg = LinearRegression()
 parameters = {'normalize':(True, False)}
 
 
-# In[505]:
+# In[553]:
 
 parameters = {'normalize':(True, False)}
 clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
 clf.fit(features,response)
 
 
-# In[510]:
+# In[637]:
 
-clf.score(features,response)
+clf = LinearRegression()
+temp=features['age'].values
+
+# print(features)
+print(clf.fit(features[["age"]],response).coef_)
+print(temp.dtype)
+print(response.dtype)
 
 
-# In[511]:
+# In[638]:
 
-linear_reg
+clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
+clf.fit(features['age'],response)
+
+
+# In[648]:
+
+df5=pd.DataFrame([[1,23,4,5]], columns=['a','b','c','d'])
+
+
+# In[650]:
+
+df5.append(pd.DataFrame([[1,2,3,4]], columns=['a','b','c','d']))
 
 
 # In[509]:
@@ -258,9 +275,15 @@ from mpld3 import plugins, utils
 # mpld3.display()
 
 
-# In[ ]:
+# In[550]:
 
-rfc = RandomForestClassifier()
+for i in features.columns:
+    features[i]
+
+
+# In[551]:
+
+
 
 
 # In[512]:

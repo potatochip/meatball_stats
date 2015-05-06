@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.formula.api as smf
 from collections import defaultdict
+import pickle
 
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
@@ -30,6 +31,13 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 
+
+pd.set_option('display.height', 1000)
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+
+
 def get_sample_dataset(dataset='processed.cleveland.data'):
     '''
     uses sample dataset from clevaland heart disease study if no dataset passed
@@ -49,24 +57,76 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     response = df.diagnosis
     return features, response, df
 
+def save_dataframe(dataframe, filename):
+    with open(filename+".pickle", "wb") as output_file:
+        pickle.dump(dataframe, output_file)
+    dataframe.set_index(['Feature', 'Estimator'], inplace=True)
+    dataframe.to_csv(filename+'.tsv', sep='\t')
+    print dataframe
 
-def create_estimator_database():
-    columns = ['Accuracy', 'Precision', 'Recall', 'F1', 'AUC', 'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
-    df = pd.DataFrame(columns=[columns])
-    return df
+def create_estimator_database(estimators, features, response, caller):
+    X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
+    columns = ['Feature', 'Estimator', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUC', 'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
+    estimator_df = pd.DataFrame(columns=[columns])
+
+    # set tuning below to an evaluation metric to just judge that. set it to False to have it evaluate all metrics
+    tuning = 'accuracy'
+    # tuning = False
+    for estimator in estimators:
+        if estimator == 'linear':
+            scores_dict, model = linear(X_train, X_test, y_train, y_test)
+            score, best = scores_dict['accuracy']
+            evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, {}, {}, {}, {}]
+        elif estimator == 'knn':
+            scores_dict, model = knn(features, response, tuning)
+        elif estimator == 'logistic':
+            scores_dict, model = logistic(features, response, tuning)
+        elif estimator == 'gaussian':
+            scores_dict, model = gaussian(features, response, tuning)
+        elif estimator == 'svc':
+            scores_dict, model = support_vector(features, response, tuning)
+        elif estimator == 'decision_tree':
+            scores_dict, model = decision_tree(features, response, tuning)
+        elif estimator == 'random_forest':
+            scores_dict, model = random_forest(features, response, tuning)
+        else:
+            raise ValueError('Unknown estimator: {0}'.format(estimator))
+        if estimator == 'linear':
+            pass
+        else:
+            for value in scores_dict.values():
+                accuracy, accuracy_best = value if 'accuracy' in scores_dict else (0, 0)
+                precision, precision_best = value if 'precision' in scores_dict else (0, 0)
+                recall, recall_best = value if 'recall' in scores_dict else (0, 0)
+                f1, f1_best = value if 'f1' in scores_dict else (0, 0)
+                auc, auc_best = value if 'roc_auc' in scores_dict else (0, 0)
+            evaluation_metrics = [caller, estimator, accuracy, precision, recall, f1, auc, accuracy_best, precision_best, recall_best, f1_best, auc_best]
+        estimator_df = estimator_df.append(pd.DataFrame([evaluation_metrics], columns=columns))
+    return estimator_df
 
 
-def choose_multi_variable_estimator():
-    pass
+def multi_feature(features, response):
+    # for testing. remove next line after finished
+    # estimators = ['gaussian', 'logistic']
+    estimator_df = create_estimator_database(estimators, features, response, 'multi')
+    return estimator_df
 
 
-def choose_single_estimator():
-    pass
+def single_feature(features, response):
+    # for testing. remove next line after finished
+    # estimators = ['gaussian', 'linear']
+    single_feature_df = pd.DataFrame()
+    for i in features.columns:
+        print("Working on: {0}".format(i))
+        single_feature = features[[i]]
+        estimator_df = create_estimator_database(estimators, single_feature, response, i)
+        single_feature_df = single_feature_df.append(estimator_df)
+    return single_feature_df
 
 
 def hyper_parameter_full_report():
     # spit this output to a file instead of screen
-    scores = ['accuracy', 'precision', 'recall', 'f1', 'auc']
+    scores = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
     for score in scores:
         print("Working on "+model_name)
         print("# Tuning hyper-parameters for %s\n" % score)
@@ -86,8 +146,9 @@ def hyper_parameter_full_report():
 
 
 def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
-    # runs all the parameters specified and returns the best model
-    # tuning tunes the hyper parameters to get the best score for that specific scoring test
+    '''
+    runs all the parameters specified and returns the best model
+    '''
     if model_name == 'Linear Regression':
         X_train, y_train = x_and_y
         print("Working on "+model_name)
@@ -101,41 +162,15 @@ def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
         else:
             scores = [tuning]
         score_dict = defaultdict(int)
-        # score_list = []
         for score in scores:
             print("Working on "+model_name)
-            print("# Tuning hyper-parameters for %s\n" % score)
+            print("# Tuning hyper-parameters for %s" % score)
             clf = GridSearchCV(estimator, parameters, cv=10, scoring=score, n_jobs=-1)
             clf.fit(features, response)
             print("Best parameters set found on development set:")
             print(clf.best_params_)
-            # print("\nGrid scores on development set:\n")
-            # for params, mean_score, scores in clf.grid_scores_:
-            #     print("%0.3f (+/-%0.03f) for %r" % (mean_score, scores.std() * 2, params))
-            # print("\nDetailed classification report:\n")
-            # print("The model is trained on the full development set.")
-            # print("The scores are computed on the full evaluation set.\n")
-            # y_true, y_pred = y_test, clf.predict(X_test)
-            # print(classification_report(y_true, y_pred))
             print("\n")
             score_dict[score] = (clf.best_score_, clf.best_params_)
-        # precision = precision_score(y_test, clf.predict(X_test))
-        # score_list.append(precision)
-        # recall = recall_score(y_test, clf.predict(X_test))
-        # score_list.append(recall)
-        # f1 = f1_score(y_test, clf.predict(X_test))
-        # score_list.append(f1)
-        # probabilities = clf.fit(X_train, y_train).predict_proba(X_test)
-        # fpr, tpr, thresholds = roc_curve(y_test, probabilities[:, 1], pos_label=1)
-        # roc_auc = auc(fpr, tpr)
-        # score_list.append(roc_auc)
-        # if model_name != 'SVC':
-        #     probabilities = clf.fit(X_train, y_train).predict_proba(X_test)
-        #     fpr, tpr, thresholds = roc_curve(y_test, probabilities[:, 1], pos_label=1)
-        #     roc_auc = auc(fpr, tpr)
-        #     score_list.append(roc_auc)
-        # else:
-        #     score_list.append(0)
         return score_dict, clf
 
 
@@ -185,12 +220,10 @@ def linear(X_train, X_test, y_train, y_test):
     return {tuning: (clf.score(X_test, y_test), clf.best_params_)}, clf
     # implement foward selection for the number of variables
 
-def knn(features, response):
+def knn(features, response, tuning):
     '''
     K-nearest neighbor.
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     knn = KNeighborsClassifier()
     parameters = {'n_neighbors':[10, 20, 30, 40, 50, 60], 'weights':['uniform', 'distance'], 'algorithm':['ball_tree', 'kd_tree', 'brute', 'auto'], 'leaf_size':[10,20,30,40,50,60], 'p':[1,2]}
@@ -198,12 +231,10 @@ def knn(features, response):
     return scores_dict, model
 
 
-def logistic(features, response):
+def logistic(features, response, tuning):
     '''
     Logistic regression.
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     log_reg = LogisticRegression()
     parameters = {'penalty':['l1','l2'], 'solver':['liblinear','lbfgs','newton-cg']}
@@ -211,12 +242,10 @@ def logistic(features, response):
     return scores_dict, model
 
 
-def gaussian(features, response):
+def gaussian(features, response, tuning):
     '''
     Gaussian NB
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     gaussian = GaussianNB()
     parameters = {}
@@ -224,12 +253,10 @@ def gaussian(features, response):
     return scores_dict, model
 
 
-def support_vector(features, response):
+def support_vector(features, response, tuning):
     '''
     Support vector classification
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     svc = SVC()
     parameters = {'probability':[True], 'C': [1, 10, 100, 1000], 'degree':[1,3,5,7], 'gamma': [0.0, 0.001, 0.0001], 'shrinking':[True, False]}
@@ -237,12 +264,10 @@ def support_vector(features, response):
     return scores_dict, model
 
 
-def decision_tree(features, response):
+def decision_tree(features, response, tuning):
     '''
     Decision Tree classifiers
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     dtc = DecisionTreeClassifier()
     parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30]}
@@ -250,12 +275,10 @@ def decision_tree(features, response):
     return scores_dict, model
 
 
-def random_forest(features, response):
+def random_forest(features, response, tuning):
     '''
     Random forest classifier
     '''
-    # tuning = 'accuracy'
-    tuning = False
     x_and_y = [features, response]
     rfc = RandomForestClassifier()
     parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30], 'bootstrap':[True, False]}
@@ -270,7 +293,7 @@ def sample_size_learning_curve(model):
     plt.legend()
 
 
-def make_plot(X, y, model, test_data, model_name, response='diagnosis'):
+def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'):
     feature = X.columns
     f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
     sns.regplot(X[feature[4]], y, test_data, ax=ax1)
@@ -308,46 +331,16 @@ def make_plot(X, y, model, test_data, model_name, response='diagnosis'):
 
 
 def main():
-    #for testing
-    estimators = ['random_forest']
+    multi_df = multi_feature(f, r)
+    single_feature_df = single_feature(f, r)
+    combined_df = multi_df.append(single_feature_df)
+    save_dataframe(combined_df, 'combined_df')
 
-    X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
 
-    estimator_df = create_estimator_database()
-    for estimator in estimators:
-        if estimator == 'linear':
-            scores_dict, model = linear(X_train, X_test, y_train, y_test)
-            score, best = scores_dict['accuracy']
-            evaluation_metrics = [score, 0, 0, 0, 0, best, 0, 0, 0, 0]
-        elif estimator == 'knn':
-            scores_dict, model = knn(features, response)
-        elif estimator == 'logistic':
-            scores_dict, model = logistic(features, response)
-        elif estimator == 'gaussian':
-            scores_dict, model = gaussian(features, response)
-        elif estimator == 'svc':
-            scores_dict, model = support_vector(features, response)
-        elif estimator == 'decision_tree':
-            scores_dict, model = decision_tree(features, response)
-        elif estimator == 'random_forest':
-            scores_dict, model = random_forest(features, response)
-        else:
-            raise ValueError('Unknown estimator: {0}'.format(estimator))
-        if estimator == 'linear':
-            pass
-        else:
-            accuracy, accuracy_best = scores_dict['accuracy']
-            precision, precision_best = scores_dict['precision']
-            recall, recall_best = scores_dict['recall']
-            f1, f1_best = scores_dict['f1']
-            auc, auc_best = scores_dict['roc_auc']           
-            evaluation_metrics = [accuracy, precision, recall, f1, auc, accuracy_best, precision_best, recall_best, f1_best, auc_best]
-        estimator_df.loc[estimator] = evaluation_metrics
-    print estimator_df
     if plots:
         #model =
         #model_name =
-        make_plot(X_test, y_test, model, data_test, model_name='linear', response='diagnosis')
+        make_plot(X_test, y_test, model, data_test, 'linear', features, response='diagnosis')
 
 
 if __name__ == '__main__':
@@ -355,7 +348,7 @@ if __name__ == '__main__':
         sys.argv[1]
     except:
         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-        features, response, data = get_sample_dataset()
+        f, r, data = get_sample_dataset()
         plots = False
     else:
         estimators = sys.argv[1]
