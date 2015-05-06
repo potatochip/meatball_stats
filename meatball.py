@@ -41,7 +41,7 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
                   'diagnosis']
     df.index.names = ['patient']
     df = df.convert_objects(convert_numeric=True)
-    # change diagnosis from 0-4 scale to just 0 or 1
+    # changing diagnosis from 0-4 scale to just 0 or 1
     df.diagnosis = df.diagnosis.apply(lambda x: 0 if x == 0 else 1)
     df.dropna(inplace=True)
 
@@ -51,7 +51,7 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
 
 
 def create_estimator_database():
-    columns = ['Accuracy', 'Precision', 'Recall', 'F1', 'AUC', 'BestParams']
+    columns = ['Accuracy', 'Precision', 'Recall', 'F1', 'AUC', 'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
     df = pd.DataFrame(columns=[columns])
     return df
 
@@ -64,8 +64,9 @@ def choose_single_estimator():
     pass
 
 
-def classifier_full_report():
-    scores = ['accuracy', 'precision', 'recall', 'f1']
+def hyper_parameter_full_report():
+    # spit this output to a file instead of screen
+    scores = ['accuracy', 'precision', 'recall', 'f1', 'auc']
     for score in scores:
         print("Working on "+model_name)
         print("# Tuning hyper-parameters for %s\n" % score)
@@ -84,49 +85,63 @@ def classifier_full_report():
         print("\n")
 
 
-def grid_squid(estimator, parameters, X_train, X_test, y_train, y_test, model_name, tuning='accuracy'):
+def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
     # runs all the parameters specified and returns the best model
     # tuning tunes the hyper parameters to get the best score for that specific scoring test
     if model_name == 'Linear Regression':
+        X_train, y_train = x_and_y
         print("Working on "+model_name)
-        clf = GridSearchCV(estimator, parameters, cv=10)
+        clf = GridSearchCV(estimator, parameters, cv=10, n_jobs=-1)
         clf.fit(X_train, y_train)
         return clf
     else:
-        score_tuning = defaultdict(int)
-        score_list = []
-        # scores = ['accuracy', 'precision', 'recall', 'f1']
-        scores = [tuning]
+        features, response = x_and_y
+        if not tuning:
+            scores = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+        else:
+            scores = [tuning]
+        score_dict = defaultdict(int)
+        # score_list = []
         for score in scores:
-            # need to have this return auc as well
             print("Working on "+model_name)
             print("# Tuning hyper-parameters for %s\n" % score)
-            clf = GridSearchCV(estimator, parameters, cv=10, scoring=score)
-            clf.fit(X_train, y_train)
-            print("Best parameters set found on development set:\n")
+            clf = GridSearchCV(estimator, parameters, cv=10, scoring=score, n_jobs=-1)
+            clf.fit(features, response)
+            print("Best parameters set found on development set:")
             print(clf.best_params_)
             # print("\nGrid scores on development set:\n")
             # for params, mean_score, scores in clf.grid_scores_:
             #     print("%0.3f (+/-%0.03f) for %r" % (mean_score, scores.std() * 2, params))
-            print("\nDetailed classification report:\n")
-            print("The model is trained on the full development set.")
-            print("The scores are computed on the full evaluation set.\n")
-            y_true, y_pred = y_test, clf.predict(X_test)
-            print(classification_report(y_true, y_pred))
+            # print("\nDetailed classification report:\n")
+            # print("The model is trained on the full development set.")
+            # print("The scores are computed on the full evaluation set.\n")
+            # y_true, y_pred = y_test, clf.predict(X_test)
+            # print(classification_report(y_true, y_pred))
             print("\n")
-            score_tuning[score] = clf.best_params_
-            score_list.append(clf.best_score_)
-        precision = precision_score(y_test, clf.predict(X_test))
-        score_list.append(precision)
-        recall = recall_score(y_test, clf.predict(X_test))
-        score_list.append(recall)
-        f1 = f1_score(y_test, clf.predict(X_test))
-        score_list.append(f1)
-        probabilities = clf.fit(X_train, y_train).predict_proba(X_test)
-        fpr, tpr, thresholds = roc_curve(y_test, probabilities[:, 1], pos_label=1)
-        roc_auc = auc(fpr, tpr)
-        score_list.append(roc_auc)
-        return score_list, score_tuning[tuning]
+            score_dict[score] = (clf.best_score_, clf.best_params_)
+        # precision = precision_score(y_test, clf.predict(X_test))
+        # score_list.append(precision)
+        # recall = recall_score(y_test, clf.predict(X_test))
+        # score_list.append(recall)
+        # f1 = f1_score(y_test, clf.predict(X_test))
+        # score_list.append(f1)
+        # probabilities = clf.fit(X_train, y_train).predict_proba(X_test)
+        # fpr, tpr, thresholds = roc_curve(y_test, probabilities[:, 1], pos_label=1)
+        # roc_auc = auc(fpr, tpr)
+        # score_list.append(roc_auc)
+        # if model_name != 'SVC':
+        #     probabilities = clf.fit(X_train, y_train).predict_proba(X_test)
+        #     fpr, tpr, thresholds = roc_curve(y_test, probabilities[:, 1], pos_label=1)
+        #     roc_auc = auc(fpr, tpr)
+        #     score_list.append(roc_auc)
+        # else:
+        #     score_list.append(0)
+        return score_dict, clf
+
+
+def deep_sea_squid(estimator, parameters, X_train, X_test, y_train, y_test, model_name, tuning='accuracy'):
+    # call squid grid again with narrower and more detailed parameters once model selected
+    pass
 
 
 def linear_foward_selection(X_train, y_train):
@@ -162,40 +177,90 @@ def linear(X_train, X_test, y_train, y_test):
     '''
     linear regression. using R-squared for accuracy here
     '''
+    tuning = 'accuracy'
+    x_and_y = [X_train, y_train]
     linear_reg = LinearRegression()
     parameters = {'normalize':[True, False]}
-    clf = grid_squid(linear_reg, parameters, X_train, X_test, y_train, y_test, 'Linear Regression')
-    return clf.score(X_test, y_test), clf, clf.best_params_
+    clf = grid_squid(linear_reg, parameters, x_and_y, 'Linear Regression', tuning)
+    return {tuning: (clf.score(X_test, y_test), clf.best_params_)}, clf
     # implement foward selection for the number of variables
 
-def knn(X_train, X_test, y_train, y_test):
+def knn(features, response):
     '''
     K-nearest neighbor.
     '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
     knn = KNeighborsClassifier()
-    parameters = {'n_neighbors':range(1,50), 'weights':['uniform', 'distance'], 'algorithm':['ball_tree', 'kd_tree', 'brute', 'auto'], 'leaf_size':[10,20,30,40,50,60], 'p':[1,2]}
-    scores, best = grid_squid(knn, parameters, X_train, X_test, y_train, y_test, 'KNN')
-    return scores, best
+    parameters = {'n_neighbors':[10, 20, 30, 40, 50, 60], 'weights':['uniform', 'distance'], 'algorithm':['ball_tree', 'kd_tree', 'brute', 'auto'], 'leaf_size':[10,20,30,40,50,60], 'p':[1,2]}
+    scores_dict, model = grid_squid(knn, parameters, x_and_y, 'KNN', tuning)
+    return scores_dict, model
 
 
-def logistic(X_train, X_test, y_train, y_test):
+def logistic(features, response):
     '''
     Logistic regression.
     '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
     log_reg = LogisticRegression()
     parameters = {'penalty':['l1','l2'], 'solver':['liblinear','lbfgs','newton-cg']}
-    scores, best = grid_squid(log_reg, parameters, X_train, X_test, y_train, y_test, 'Logistic Regression')
-    return scores, best
+    scores_dict, model = grid_squid(log_reg, parameters, x_and_y, 'Logistic Regression', tuning)
+    return scores_dict, model
 
 
-def gaussian(X_train, X_test, y_train, y_test):
+def gaussian(features, response):
     '''
     Gaussian NB
     '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
     gaussian = GaussianNB()
     parameters = {}
-    scores, best = grid_squid(gaussian, parameters, X_train, X_test, y_train, y_test, 'Gaussian NB')
-    return scores, best
+    scores_dict, model = grid_squid(gaussian, parameters, x_and_y, 'Gaussian NB', tuning)
+    return scores_dict, model
+
+
+def support_vector(features, response):
+    '''
+    Support vector classification
+    '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
+    svc = SVC()
+    parameters = {'probability':[True], 'C': [1, 10, 100, 1000], 'degree':[1,3,5,7], 'gamma': [0.0, 0.001, 0.0001], 'shrinking':[True, False]}
+    scores_dict, model = grid_squid(svc, parameters, x_and_y, 'SVC', tuning)
+    return scores_dict, model
+
+
+def decision_tree(features, response):
+    '''
+    Decision Tree classifiers
+    '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
+    dtc = DecisionTreeClassifier()
+    parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30]}
+    scores_dict, model = grid_squid(dtc, parameters, x_and_y, 'DTC', tuning)
+    return scores_dict, model
+
+
+def random_forest(features, response):
+    '''
+    Random forest classifier
+    '''
+    # tuning = 'accuracy'
+    tuning = False
+    x_and_y = [features, response]
+    rfc = RandomForestClassifier()
+    parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30], 'bootstrap':[True, False]}
+    scores_dict, model = grid_squid(rfc, parameters, x_and_y, 'RFC', tuning)
+    return scores_dict, model
 
 
 def sample_size_learning_curve(model):
@@ -243,37 +308,53 @@ def make_plot(X, y, model, test_data, model_name, response='diagnosis'):
 
 
 def main():
+    #for testing
+    estimators = ['random_forest']
+
     X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
 
     estimator_df = create_estimator_database()
     for estimator in estimators:
-        if estimator is linear:
-            rsquared, model, parameters = linear(X_train, X_test, y_train, y_test)
-            evaluation_metrics = [rsquared, 0, 0, 0, 0, parameters]
-            if plots: make_plot(X_test, y_test, model, data_test, model_name='linear', response='diagnosis')
-        elif estimator is knn:
-            scores, best = knn(X_train, X_test, y_train, y_test)
-            accuracy, precision, recall, f1, auc = scores
-            evaluation_metrics = [accuracy, precision, recall, f1, auc, best]
-        elif estimator is logistic:
-            scores, best = logistic(X_train, X_test, y_train, y_test)
-            accuracy, precision, recall, f1, auc = scores
-            evaluation_metrics = [accuracy, precision, recall, f1, auc, best]
-        elif estimator is gaussian:
-            scores, best = gaussian(X_train, X_test, y_train, y_test)
-            accuracy, precision, recall, f1, auc = scores
-            evaluation_metrics = [accuracy, precision, recall, f1, auc, best]
+        if estimator == 'linear':
+            scores_dict, model = linear(X_train, X_test, y_train, y_test)
+            score, best = scores_dict['accuracy']
+            evaluation_metrics = [score, 0, 0, 0, 0, best, 0, 0, 0, 0]
+        elif estimator == 'knn':
+            scores_dict, model = knn(features, response)
+        elif estimator == 'logistic':
+            scores_dict, model = logistic(features, response)
+        elif estimator == 'gaussian':
+            scores_dict, model = gaussian(features, response)
+        elif estimator == 'svc':
+            scores_dict, model = support_vector(features, response)
+        elif estimator == 'decision_tree':
+            scores_dict, model = decision_tree(features, response)
+        elif estimator == 'random_forest':
+            scores_dict, model = random_forest(features, response)
         else:
             raise ValueError('Unknown estimator: {0}'.format(estimator))
+        if estimator == 'linear':
+            pass
+        else:
+            accuracy, accuracy_best = scores_dict['accuracy']
+            precision, precision_best = scores_dict['precision']
+            recall, recall_best = scores_dict['recall']
+            f1, f1_best = scores_dict['f1']
+            auc, auc_best = scores_dict['roc_auc']           
+            evaluation_metrics = [accuracy, precision, recall, f1, auc, accuracy_best, precision_best, recall_best, f1_best, auc_best]
         estimator_df.loc[estimator] = evaluation_metrics
     print estimator_df
+    if plots:
+        #model =
+        #model_name =
+        make_plot(X_test, y_test, model, data_test, model_name='linear', response='diagnosis')
 
 
 if __name__ == '__main__':
     try:
         sys.argv[1]
     except:
-        estimators = [linear, knn, logistic, gaussian]
+        estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
         features, response, data = get_sample_dataset()
         plots = False
     else:

@@ -260,7 +260,7 @@ from mpld3 import plugins, utils
 
 # In[ ]:
 
-
+rfc = RandomForestClassifier()
 
 
 # In[512]:
@@ -306,9 +306,14 @@ for score in scores:
     print()
 
 
-# In[516]:
+# In[538]:
 
-clf.best_score_
+clf.best_estimator_
+
+
+# In[540]:
+
+clf.predict(X_test).best_score
 
 
 # In[476]:
