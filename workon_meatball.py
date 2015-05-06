@@ -190,9 +190,14 @@ clf.fit(features['age'],response)
 df5=pd.DataFrame([[1,23,4,5]], columns=['a','b','c','d'])
 
 
-# In[650]:
+# In[657]:
 
-df5.append(pd.DataFrame([[1,2,3,4]], columns=['a','b','c','d']))
+df5 = df5.append(pd.DataFrame([[1,2,3,4]], columns=['a','b','c','d']))
+
+
+# In[667]:
+
+df5[['a']]
 
 
 # In[509]:

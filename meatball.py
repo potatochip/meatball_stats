@@ -8,8 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.formula.api as smf
+import datetime
 from collections import defaultdict
-import pickle
+from StringIO import StringIO
+import prettytable
 
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
@@ -31,16 +33,16 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 
-
-pd.set_option('display.height', 1000)
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.width', 1000)
+# print dataframe to screen with enough room
+# pd.set_option('display.height', 1000)
+# pd.set_option('display.max_rows', 500)
+# pd.set_option('display.max_columns', 500)
+# pd.set_option('display.width', 1000)
 
 
 def get_sample_dataset(dataset='processed.cleveland.data'):
     '''
-    uses sample dataset from clevaland heart disease study if no dataset passed
+    uses sample dataset from cleveland heart disease study if no dataset passed
     '''
     df = pd.DataFrame.from_csv(dataset, header=-1, index_col=None)
     df.columns = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol',
@@ -58,11 +60,25 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     return features, response, df
 
 def save_dataframe(dataframe, filename):
-    with open(filename+".pickle", "wb") as output_file:
-        pickle.dump(dataframe, output_file)
+    dt = str(datetime.datetime.now())
+    filename = filename + dt
+
+    dataframe.to_pickle(filename+".pickle")
+
     dataframe.set_index(['Feature', 'Estimator'], inplace=True)
+
     dataframe.to_csv(filename+'.tsv', sep='\t')
-    print dataframe
+
+    # print dataframe to screen and text file in nice format
+    output = StringIO()
+    dataframe.to_csv(output)
+    output.seek(0)
+    pt = prettytable.from_csv(output)
+    print pt
+    table_txt = pt.get_string()
+    with open(filename+'.txt','w') as file:
+        file.write(table_txt)
+
 
 def create_estimator_database(estimators, features, response, caller):
     X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
@@ -76,7 +92,7 @@ def create_estimator_database(estimators, features, response, caller):
         if estimator == 'linear':
             scores_dict, model = linear(X_train, X_test, y_train, y_test)
             score, best = scores_dict['accuracy']
-            evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, {}, {}, {}, {}]
+            evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, 0, 0, 0, 0]
         elif estimator == 'knn':
             scores_dict, model = knn(features, response, tuning)
         elif estimator == 'logistic':
@@ -124,25 +140,26 @@ def single_feature(features, response):
     return single_feature_df
 
 
-def hyper_parameter_full_report():
-    # spit this output to a file instead of screen
+def hyper_parameter_full_report(estimator, parameters):
+    # spits this output to a file instead of screen. the whole enchilada.
     scores = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
-    for score in scores:
-        print("Working on "+model_name)
-        print("# Tuning hyper-parameters for %s\n" % score)
-        clf = GridSearchCV(estimator, parameters, cv=10, scoring=score)
-        clf.fit(X_train, y_train)
-        print("Best parameters set found on development set:\n")
-        print(clf.best_params_)
-        print("\nGrid scores on development set:\n")
-        for params, mean_score, scores in clf.grid_scores_:
-            print("%0.3f (+/-%0.03f) for %r" % (mean_score, scores.std() * 2, params))
-        print("\nDetailed classification report:\n")
-        print("The model is trained on the full development set.")
-        print("The scores are computed on the full evaluation set.\n")
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        print("\n")
+    with open('hyper_parameter_full_report.txt', 'wb') as f:
+        for score in scores:
+            f.write("Working on "+model_name)
+            f.write("# Tuning hyper-parameters for %s\n" % score)
+            clf = GridSearchCV(estimator, parameters, cv=10, scoring=score)
+            clf.fit(X_train, y_train)
+            f.write("Best parameters set found on development set:\n")
+            f.write(clf.best_params_)
+            f.write("\nGrid scores on development set:\n")
+            for params, mean_score, scores in clf.grid_scores_:
+                f.write("%0.3f (+/-%0.03f) for %r" % (mean_score, scores.std() * 2, params))
+            f.write("\nDetailed classification report:\n")
+            f.write("The model is trained on the full development set.")
+            f.write("The scores are computed on the full evaluation set.\n")
+            y_true, y_pred = y_test, clf.predict(X_test)
+            f.write(classification_report(y_true, y_pred))
+            f.write("\n")
 
 
 def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
@@ -183,7 +200,7 @@ def linear_foward_selection(X_train, y_train):
     '''
     forward selection of optimize adjusted R-squared by adding features that help
     the most one at a time until the score goes down or you run out of features
-    not implemeneted yet
+    not implemeneted yet. presently not called from within module.
     '''
     remaining = {X_train.columns}
     remaining.remove(response)
@@ -292,6 +309,10 @@ def sample_size_learning_curve(model):
     plt.plot(train_sizes, np.mean(test_scores, axis=1), label='test')
     plt.legend()
 
+
+def max_scores():
+    pass
+    
 
 def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'):
     feature = X.columns
