@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[529]:
+# In[152]:
 
 import pandas as pd
 import numpy as np
@@ -12,12 +12,12 @@ get_ipython().magic(u'matplotlib inline')
 import matplotlib.pyplot as plt
 
 
-# In[530]:
+# In[153]:
 
 df = pd.DataFrame.from_csv('processed.cleveland.data', header=-1, index_col=None)
 
 
-# In[531]:
+# In[154]:
 
 df.columns = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol', 'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina', 'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
 df.index.names = ['patient']
@@ -26,12 +26,12 @@ df.diagnosis = df.diagnosis.apply(lambda x: 0 if x == 0 else 1)
 df.dropna(inplace=True)
 
 
-# In[532]:
+# In[155]:
 
 df.head()
 
 
-# In[494]:
+# In[156]:
 
 features = df.drop('diagnosis', axis=1)
 response = df.diagnosis
@@ -40,12 +40,12 @@ from sklearn.cross_validation import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(features, response)
 
 
-# In[217]:
+# In[157]:
 
 from sklearn.linear_model import LinearRegression
 
 
-# In[260]:
+# In[158]:
 
 linear_reg = LinearRegression()
 linear_reg.fit(features, response)
@@ -56,24 +56,24 @@ linear_reg.fit(features, response)
 
 
 
-# In[219]:
+# In[159]:
 
 linear_reg.score(features, response)
 
 
-# In[220]:
+# In[160]:
 
 model = sm.OLS(response, features)
 results = model.fit()
 results.summary()
 
 
-# In[221]:
+# In[161]:
 
 plt.scatter(features.resting_bp, response)
 
 
-# In[222]:
+# In[162]:
 
 fig, ax = plt.subplots()
 fig = sm.graphics.plot_fit(results, 1, ax=ax)
@@ -82,7 +82,7 @@ ax.set_xlabel("Resting BP")
 ax.set_title("Linear Regression")
 
 
-# In[495]:
+# In[163]:
 
 X_train, X_test, y_train, y_test = train_test_split(features, response)
 X = X_test
@@ -94,17 +94,17 @@ plt.yticks(())
 plt.show()
 
 
-# In[241]:
+# In[ ]:
 
 
 
 
-# In[242]:
+# In[164]:
 
 sns.lmplot('cholesterol', 'diagnosis', df)
 
 
-# In[298]:
+# In[165]:
 
 f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
 sns.regplot('cholesterol', 'diagnosis', df, ax=ax1)
@@ -134,41 +134,41 @@ sns.residplot(X.cholesterol, (linear_reg.predict(X) - y) ** 2, color="indianred"
 # axarr[1, 1].set_title('Axis [1,1]')
 
 
-# In[282]:
+# In[166]:
 
 X.cholesterol
 
 
-# In[165]:
+# In[167]:
 
 from sklearn.grid_search import GridSearchCV
 
 
-# In[339]:
+# In[168]:
 
 sns.interactplot(X[X.columns[4]], X[X.columns[5]], y.values, ax=ax4, cmap="coolwarm", filled=True, levels=25)
 
 
-# In[337]:
+# In[169]:
 
 y.values
 
 
-# In[504]:
+# In[170]:
 
 from sklearn.svm import SVC
 linear_reg = LinearRegression()
 parameters = {'normalize':(True, False)}
 
 
-# In[553]:
+# In[171]:
 
 parameters = {'normalize':(True, False)}
 clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
 clf.fit(features,response)
 
 
-# In[637]:
+# In[172]:
 
 clf = LinearRegression()
 temp=features['age'].values
@@ -179,43 +179,42 @@ print(temp.dtype)
 print(response.dtype)
 
 
-# In[638]:
-
-clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
-clf.fit(features['age'],response)
+# In[ ]:
 
 
-# In[711]:
+
+
+# In[173]:
 
 df5=pd.DataFrame([[1,23,4,5]], columns=['a','b','c','d'])
 
 
-# In[718]:
+# In[174]:
 
 df5 = df5.append(pd.DataFrame([[1,2,3,4]], columns=['a','b','c','d']))
 
 
-# In[668]:
+# In[175]:
 
 df5[['a']]
 
 
-# In[682]:
+# In[176]:
 
 import prettytable
 
 
-# In[705]:
+# In[177]:
 
 df5[df5.columns.tolist()[1]].tolist()
 
 
-# In[786]:
+# In[178]:
 
 len(df5.columns)
 
 
-# In[785]:
+# In[179]:
 
 import itertools
 feature_list = []
@@ -236,28 +235,28 @@ for i in thelist:
 
 
 
-# In[704]:
+# In[189]:
 
 df5.set_index(['b','c']).index.names
 
 
 
-# In[509]:
+# In[190]:
 
 clf.get_params
 
 
-# In[198]:
+# In[191]:
 
 clf.score(features, response)
 
 
-# In[299]:
+# In[192]:
 
 len((linear_reg.predict(X)- y)**2)
 
 
-# In[358]:
+# In[193]:
 
 f, ax = plt.subplots(figsize=(10, 10))
 cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
@@ -267,12 +266,12 @@ ax.grid(False)
 ax.set_title='Multi-variable correlation significance level'
 
 
-# In[401]:
+# In[194]:
 
 sns.coefplot("diagnosis ~ "+' + '.join(features), df, intercept=True, palette="Set1")
 
 
-# In[442]:
+# In[195]:
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
@@ -282,20 +281,20 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[ ]:
+# In[196]:
 
 log_reg = LogisticRegression()
 log_reg
 
 
-# In[404]:
+# In[197]:
 
 import matplotlib
 import mpld3
 from mpld3 import plugins, utils
 
 
-# In[469]:
+# In[198]:
 
 # X = features
 # y = response
@@ -322,18 +321,18 @@ from mpld3 import plugins, utils
 # mpld3.display()
 
 
-# In[550]:
+# In[199]:
 
 for i in features.columns:
     features[i]
 
 
-# In[551]:
+# In[ ]:
 
 
 
 
-# In[512]:
+# In[200]:
 
 # n_neighbors=5, weights='uniform', algorithm='auto', leaf_size=30, p=2, metric='minkowski', metric_params=None
 parameters = {'n_neighbors':range(1,50)}
@@ -376,17 +375,17 @@ for score in scores:
     print()
 
 
-# In[538]:
+# In[201]:
 
 clf.best_estimator_
 
 
-# In[540]:
+# In[202]:
 
 clf.predict(X_test).best_score
 
 
-# In[476]:
+# In[219]:
 
 from __future__ import print_function
 
@@ -445,4 +444,97 @@ for score in scores:
     y_true, y_pred = y_test, clf.predict(X_test)
     print(classification_report(y_true, y_pred))
     print()
+
+
+# In[220]:
+
+classification_report(y_true, y_pred)
+
+
+# In[ ]:
+
+
+
+
+# In[249]:
+
+estimator = LogisticRegression()
+parameters = {'penalty':['l1','l2'], 'solver':['liblinear','lbfgs','newton-cg']}
+model = GridSearchCV(estimator, parameters, scoring='accuracy')
+model.fit(features, response)
+print(model)
+model.best_score_
+
+
+# In[275]:
+
+from sklearn.cross_validation import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(features, response)
+
+from sklearn.metrics import accuracy_score
+clf = LogisticRegression()
+clf.fit(X_train, y_train)
+accuracy_score(y_test, clf.predict(X_test))
+
+
+# In[286]:
+
+from sklearn.feature_selection import RFE
+est = LogisticRegression()
+selector = RFE(est, n_features_to_select=1)
+selector = selector.fit(features, response)
+#selected features are assigned ranke 1
+print(selector.support_)
+print(selector.ranking_)
+
+
+# In[283]:
+
+est = SVC()
+selector2 = RFE(est, step=1)
+selector2 = selector.fit(features, response)
+print(selector2.ranking_)
+
+
+# In[913]:
+
+selector.n_features_
+
+
+# In[137]:
+
+from sklearn.ensemble import ExtraTreesClassifier
+
+X, y = features,response
+print(X.shape)
+clf = ExtraTreesClassifier()
+X_new = clf.fit(X, y).transform(X)
+print(clf.feature_importances_)
+print(X_new.shape)
+
+
+# In[97]:
+
+def load_pickle(pickle):
+    df = pd.read_pickle(pickle)
+    return df
+df9 = load_pickle('combined_df2015-05-06 23:18:19.950979.pickle')
+
+
+# In[98]:
+
+# df9.set_index(['Feature', 'Estimator'], inplace=True)
+# df9.set_index(['Feature'], inplace=True)
+
+
+# In[128]:
+
+# df9[(df9['Feature'] == 'multi')]['Accuracy'].max()
+
+
+# In[134]:
+
+# df9[(df9['Feature'] == 'multi')]
+idx = df9.groupby(['Feature'])['Accuracy'].transform(max) == df9['Accuracy']
+df9[idx][['Feature', 'Estimator','Accuracy', 'Accuracy_best']]
 

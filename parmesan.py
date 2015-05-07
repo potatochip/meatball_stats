@@ -1,6 +1,7 @@
 import pandas as pd
 from prettytable import PrettyTable
 import datetime
+from collections import defaultdict
 
 
 def recover_pickle(pickle, filename):
@@ -29,16 +30,23 @@ def deep_sea_squid(estimator, parameters, X_train, X_test, y_train, y_test,
     pass
 
 
-def max_scores():
-    pass
+def max_scores(dataframe):
+    max_evaluators = defaultdict(int)
+    evaluators = ['Accuracy', 'Precision', 'Recall', 'F1', 'AUC']
+    for evaluator in evaluators:
+        idx = dataframe.groupby(['Feature'])[evaluator].transform(max) == dataframe[evaluator]
+        max_evaluators[evaluator] = dataframe[idx][['Feature', 'Estimator', evaluator, evaluator+'_best']]
+    return max_evaluators
 
 
 def load_pickle(pickle):
-    pass
+    df = pd.read_pickle(pickle)
+    return df
 
 
 def make_plots():
     # colormap
+    # multi plot for roc curve
     pass
 
 
@@ -47,7 +55,15 @@ def make_prediction():
     pass
 
 
+def trim_features():
+    pass
+
+
 # # pickle recovery
 # filename = 'recovery'
 # pickle = 'combined_df2015-05-06 23:18:19.950979.pickle'
 # recover_pickle(pickle, filename)
+
+
+# df = load_pickle('all_evaluators.csv')
+# max_evaluators = max_scores(df)
