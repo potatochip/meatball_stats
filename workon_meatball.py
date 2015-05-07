@@ -185,19 +185,61 @@ clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
 clf.fit(features['age'],response)
 
 
-# In[648]:
+# In[711]:
 
 df5=pd.DataFrame([[1,23,4,5]], columns=['a','b','c','d'])
 
 
-# In[657]:
+# In[718]:
 
 df5 = df5.append(pd.DataFrame([[1,2,3,4]], columns=['a','b','c','d']))
 
 
-# In[667]:
+# In[668]:
 
 df5[['a']]
+
+
+# In[682]:
+
+import prettytable
+
+
+# In[705]:
+
+df5[df5.columns.tolist()[1]].tolist()
+
+
+# In[786]:
+
+len(df5.columns)
+
+
+# In[785]:
+
+import itertools
+feature_list = []
+for num in range(2, len(df5.columns)):
+    feature_list.extend([list(i) for i in itertools.combinations(df5, num)])
+print(feature_list)
+for i in thelist:
+    print(df5[i])
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[704]:
+
+df5.set_index(['b','c']).index.names
+
 
 
 # In[509]:

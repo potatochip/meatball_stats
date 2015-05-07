@@ -10,8 +10,9 @@ import seaborn as sns
 import statsmodels.formula.api as smf
 import datetime
 from collections import defaultdict
-from StringIO import StringIO
-import prettytable
+from prettytable import PrettyTable
+import itertools
+import math
 
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
@@ -59,38 +60,42 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     response = df.diagnosis
     return features, response, df
 
+
 def save_dataframe(dataframe, filename):
     dt = str(datetime.datetime.now())
-    filename = filename + dt
+    filename = filename + '-' + dt
 
     dataframe.to_pickle(filename+".pickle")
 
-    dataframe.set_index(['Feature', 'Estimator'], inplace=True)
-
-    dataframe.to_csv(filename+'.tsv', sep='\t')
-
-    # print dataframe to screen and text file in nice format
-    output = StringIO()
-    dataframe.to_csv(output)
-    output.seek(0)
-    pt = prettytable.from_csv(output)
+    # prints dataframe to screen and text file in nice format
+    pt = PrettyTable()
+    for i in dataframe.columns:
+        pt.add_column(i, dataframe[i].tolist())
     print pt
     table_txt = pt.get_string()
-    with open(filename+'.txt','w') as file:
+    with open(filename+'.txt', 'w') as file:
         file.write(table_txt)
 
+    # make multi-index
+    dataframe.set_index(['Feature', 'Estimator'], inplace=True)
 
-def create_estimator_database(estimators, features, response, caller):
+    # save with multi-index
+    dataframe.to_csv(filename+'.tsv', sep='\t')
+    dataframe.to_csv(filename+'.csv')
+
+
+def create_estimator_database(features, response, caller, tuning):
     X_train, X_test, y_train, y_test, data_train, data_test = train_test_split(features, response, data)
-    columns = ['Feature', 'Estimator', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUC', 'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
+    columns = ['Feature', 'Estimator', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUC',
+                'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
     estimator_df = pd.DataFrame(columns=[columns])
 
-    # set tuning below to an evaluation metric to just judge that. set it to False to have it evaluate all metrics
-    tuning = 'accuracy'
-    # tuning = False
+    # # for testing. remove next line after finished
+    # estimators = ['gaussian', 'logistic']
+
     for estimator in estimators:
         if estimator == 'linear':
-            scores_dict, model = linear(X_train, X_test, y_train, y_test)
+            scores_dict, model = linear(features, response)
             score, best = scores_dict['accuracy']
             evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, 0, 0, 0, 0]
         elif estimator == 'knn':
@@ -121,26 +126,49 @@ def create_estimator_database(estimators, features, response, caller):
     return estimator_df
 
 
-def multi_feature(features, response):
-    # for testing. remove next line after finished
-    # estimators = ['gaussian', 'logistic']
-    estimator_df = create_estimator_database(estimators, features, response, 'multi')
+def all_features(features, response, tuning):
+    estimator_df = create_estimator_database(features, response, 'all', tuning)
     return estimator_df
 
 
-def single_feature(features, response):
-    # for testing. remove next line after finished
-    # estimators = ['gaussian', 'linear']
+def single_feature(features, response, tuning):
     single_feature_df = pd.DataFrame()
     for i in features.columns:
         print("Working on: {0}".format(i))
         single_feature = features[[i]]
-        estimator_df = create_estimator_database(estimators, single_feature, response, i)
+        estimator_df = create_estimator_database(single_feature, response, i, tuning)
         single_feature_df = single_feature_df.append(estimator_df)
     return single_feature_df
 
 
-def hyper_parameter_full_report(estimator, parameters):
+def multi_feature(features, response, tuning):
+    pass
+    # # this is going to take forever as a factorial. won't work for anything more than a handful of features
+    # feature_list = []
+    # total_combinations = math.factorial(len(features.columns))
+    # count = 0
+    # for num in range(2, len(features.columns)):
+    #     feature_list.extend([list(i) for i in itertools.combinations(features, num)])
+
+    # multi_feature_df = pd.DataFrame()
+    # for i in feature_list:
+    #     print("Working on: {0}".format(i))
+    #     multi_f = features[i]
+    #     caller = " : ".join(i)
+    #     estimator_df = create_estimator_database(multi_f, response, caller, tuning)
+    #     multi_feature_df = multi_feature_df.append(estimator_df)
+    #     count += 1
+    #     remaining = count / total_combinations * 100.0
+    #     sys.stdout.write('\r' + str("%f" % remaining) + "%\n")
+    #     sys.stdout.flush()
+
+    #     if count == 100:
+    #         dt = str(datetime.datetime.now())
+    #         estimator_df.to_pickle(dt+'.pkl')
+    # return multi_feature_df
+
+
+def hyper_parameter_full_report(estimator, parameters, x_and_y, model_name):
     # spits this output to a file instead of screen. the whole enchilada.
     scores = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
     with open('hyper_parameter_full_report.txt', 'wb') as f:
@@ -166,12 +194,16 @@ def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
     '''
     runs all the parameters specified and returns the best model
     '''
+    features, response = x_and_y
     if model_name == 'Linear Regression':
-        X_train, y_train = x_and_y
         print("Working on "+model_name)
-        clf = GridSearchCV(estimator, parameters, cv=10, n_jobs=-1)
-        clf.fit(X_train, y_train)
-        return clf
+        print("# Tuning hyper-parameters for %s" % tuning)
+        clf = GridSearchCV(estimator, parameters, cv=3, n_jobs=-1)
+        clf.fit(features, response)
+        print("Best parameters set found on development set:")
+        print(clf.best_params_)
+        print("\n")
+        return clf.best_score_, clf.best_params_, clf
     else:
         features, response = x_and_y
         if not tuning:
@@ -182,7 +214,7 @@ def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
         for score in scores:
             print("Working on "+model_name)
             print("# Tuning hyper-parameters for %s" % score)
-            clf = GridSearchCV(estimator, parameters, cv=10, scoring=score, n_jobs=-1)
+            clf = GridSearchCV(estimator, parameters, cv=3, scoring=score, n_jobs=-1)
             clf.fit(features, response)
             print("Best parameters set found on development set:")
             print(clf.best_params_)
@@ -191,16 +223,12 @@ def grid_squid(estimator, parameters, x_and_y, model_name, tuning=False):
         return score_dict, clf
 
 
-def deep_sea_squid(estimator, parameters, X_train, X_test, y_train, y_test, model_name, tuning='accuracy'):
-    # call squid grid again with narrower and more detailed parameters once model selected
-    pass
-
-
 def linear_foward_selection(X_train, y_train):
     '''
     forward selection of optimize adjusted R-squared by adding features that help
     the most one at a time until the score goes down or you run out of features
-    not implemeneted yet. presently not called from within module.
+    not implemeneted yet. would only make sense for a linear model. not for categorical
+    data presently not called from within module.
     '''
     remaining = {X_train.columns}
     remaining.remove(response)
@@ -209,8 +237,7 @@ def linear_foward_selection(X_train, y_train):
     while remaining and current_score == best_new_score:
         scores_with_candidates = []
         for candidate in remaining:
-            formula = "{} ~ {} + 1".format(response,
-                                           ' + '.join(selected + [candidate]))
+            formula = "{} ~ {} + 1".format(response, ' + '.join(selected + [candidate]))
             score = smf.ols(formula, data).fit().rsquared_adj
             scores_with_candidates.append((score, candidate))
         scores_with_candidates.sort()
@@ -225,17 +252,18 @@ def linear_foward_selection(X_train, y_train):
     return model
 
 
-def linear(X_train, X_test, y_train, y_test):
+def linear(features, response):
     '''
     linear regression. using R-squared for accuracy here
     '''
     tuning = 'accuracy'
-    x_and_y = [X_train, y_train]
+    x_and_y = [features, response]
     linear_reg = LinearRegression()
     parameters = {'normalize':[True, False]}
-    clf = grid_squid(linear_reg, parameters, x_and_y, 'Linear Regression', tuning)
-    return {tuning: (clf.score(X_test, y_test), clf.best_params_)}, clf
+    score, best_param, model = grid_squid(linear_reg, parameters, x_and_y, 'Linear Regression', tuning)
+    return {tuning: (score, best_param)}, model
     # implement foward selection for the number of variables
+
 
 def knn(features, response, tuning):
     '''
@@ -303,16 +331,12 @@ def random_forest(features, response, tuning):
     return scores_dict, model
 
 
-def sample_size_learning_curve(model):
+def sample_size_learning_curve(model, features, response):
     train_sizes, train_scores, test_scores = learning_curve(model, classifiers, response, cv=10)
     plt.plot(train_sizes, np.mean(train_scores, axis=1), label='train')
     plt.plot(train_sizes, np.mean(test_scores, axis=1), label='test')
     plt.legend()
 
-
-def max_scores():
-    pass
-    
 
 def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'):
     feature = X.columns
@@ -321,8 +345,7 @@ def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'
     sns.boxplot(X[feature[4]], y, color="Blues_r", ax=ax2)
     sns.residplot(X[feature[4]], (model.predict(X) - y) ** 2, color="indianred", lowess=True, ax=ax3)
     if model_name is 'linear':
-        sns.interactplot(X[feature[3]], X[feature[4]], y, ax=ax4, filled=True,
-                 scatter_kws={"color": "dimgray"}, contour_kws={"alpha": .5})
+        sns.interactplot(X[feature[3]], X[feature[4]], y, ax=ax4, filled=True, scatter_kws={"color": "dimgray"}, contour_kws={"alpha": .5})
     elif model_name is 'logistic':
         pal = sns.blend_palette(["#4169E1", "#DFAAEF", "#E16941"], as_cmap=True)
         levels = np.linspace(0, 1, 11)
@@ -352,16 +375,23 @@ def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'
 
 
 def main():
-    multi_df = multi_feature(f, r)
-    single_feature_df = single_feature(f, r)
-    combined_df = multi_df.append(single_feature_df)
+    # ###### set tuning below to an evaluation metric to just judge that.
+    # set it to False to have it evaluate all metrics
+    tuning = 'accuracy'
+    # tuning = False
+
+    all_features_df = all_features(f, r, tuning)
+    multi_feature_df = multi_feature(f, r, tuning)
+    single_feature_df = single_feature(f, r, tuning)
+    combined_df = all_features_df.append(multi_feature_df)
+    combined_df = combined_df.append(single_feature_df)
     save_dataframe(combined_df, 'combined_df')
 
-
-    if plots:
-        #model =
-        #model_name =
-        make_plot(X_test, y_test, model, data_test, 'linear', features, response='diagnosis')
+    # if plots:
+    #     model = 0
+    #     model_name = 'linear'
+    #     response = 'diagnosis'
+    #     make_plot(X_test, y_test, model, test_data, model_name, features, response)
 
 
 if __name__ == '__main__':
@@ -370,7 +400,7 @@ if __name__ == '__main__':
     except:
         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
         f, r, data = get_sample_dataset()
-        plots = False
+        plots = True
     else:
         estimators = sys.argv[1]
         features = sys.argv[2]
