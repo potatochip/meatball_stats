@@ -161,11 +161,20 @@ linear_reg = LinearRegression()
 parameters = {'normalize':(True, False)}
 
 
-# In[171]:
+# In[306]:
 
-parameters = {'normalize':(True, False)}
-clf = GridSearchCV(linear_reg, parameters, n_jobs=-1)
-clf.fit(features,response)
+from sklearn.pipeline import Pipeline, FeatureUnion
+svc=SVC()
+lin_reg=LinearRegression()
+log_reg=LogisticRegression()
+dtc=DecisionTreeClassifier()
+combined_features = FeatureUnion([("svc", svc), ("linear_reg", lin_reg), ("log_reg", log_reg)
+                                 ]) 
+pipeline = Pipeline([("features", combined_features), ("DecisionTreeClassifier", dtc)])
+parameters = {}
+clf = GridSearchCV(pipeline, parameters, n_jobs=-1)
+# clf.fit(features,response)
+# clf.best_estimator_
 
 
 # In[172]:
@@ -332,7 +341,7 @@ for i in features.columns:
 
 
 
-# In[200]:
+# In[290]:
 
 # n_neighbors=5, weights='uniform', algorithm='auto', leaf_size=30, p=2, metric='minkowski', metric_params=None
 parameters = {'n_neighbors':range(1,50)}
@@ -364,7 +373,7 @@ for score in scores:
         print("%0.3f (+/-%0.03f) for %r"
               % (mean_score, scores.std() * 2, params))
     print()
-
+clf.C
     print("Detailed classification report:")
     print()
     print("The model is trained on the full development set.")
@@ -373,6 +382,11 @@ for score in scores:
     y_true, y_pred = y_test, clf.predict(X_test)
     print(classification_report(y_true, y_pred))
     print()
+
+
+# In[293]:
+
+clf.score('Accuracy')
 
 
 # In[201]:
@@ -385,9 +399,8 @@ clf.best_estimator_
 clf.predict(X_test).best_score
 
 
-# In[219]:
+# In[321]:
 
-from __future__ import print_function
 
 from sklearn import datasets
 from sklearn.cross_validation import train_test_split
@@ -466,7 +479,7 @@ print(model)
 model.best_score_
 
 
-# In[275]:
+# In[288]:
 
 from sklearn.cross_validation import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(features, response)
@@ -477,48 +490,70 @@ clf.fit(X_train, y_train)
 accuracy_score(y_test, clf.predict(X_test))
 
 
-# In[286]:
+# In[289]:
+
+from sklearn.cross_validation import cross_val_score
+X=features
+y=df.index
+print np.mean(cross_val_score(KNeighborsClassifier(), X, y, scoring='accuracy'))
+print np.mean(cross_val_score(KNeighborsClassifier(), X, y=='democrat', scoring='precision'))
+print np.mean(cross_val_score(KNeighborsClassifier(), X, y=='democrat', scoring='recall'))
+print np.mean(cross_val_score(KNeighborsClassifier(), X, y=='democrat', scoring='f1'))
+
+
+# In[362]:
 
 from sklearn.feature_selection import RFE
 est = LogisticRegression()
 selector = RFE(est, n_features_to_select=1)
 selector = selector.fit(features, response)
-#selected features are assigned ranke 1
+#selected features to eliminate are assigned rank 1
 print(selector.support_)
 print(selector.ranking_)
+sorted(zip(selector.ranking_, features.columns))
 
 
-# In[283]:
-
-est = SVC()
-selector2 = RFE(est, step=1)
-selector2 = selector.fit(features, response)
-print(selector2.ranking_)
-
-
-# In[913]:
-
-selector.n_features_
-
-
-# In[137]:
+# In[693]:
 
 from sklearn.ensemble import ExtraTreesClassifier
-
+from collections import Counter
+mylist = []
 X, y = features,response
-print(X.shape)
+# print(X.shape)
 clf = ExtraTreesClassifier()
-X_new = clf.fit(X, y).transform(X)
-print(clf.feature_importances_)
-print(X_new.shape)
+for i in range(1000):
+    clf.fit(X, y)
+#     print(X_new.shape)
+#     print(clf.feature_importances_)
+    # zip(sorted(zip(clf.feature_importances_, X.columns)), range(1,14))
+    # (the higher, the more important the feature).
+    mylist.extend([i[1] for i in sorted(zip(clf.feature_importances_, X.columns),reverse=False)][:5])
+Counter(mylist)
 
 
-# In[97]:
+# In[701]:
+
+dropping = ['ecg', 'blood_sugar', 'sex', 'slope', 'resting_bp', 'cholesterol']
+features.drop(dropping, axis=1)
+
+
+# In[557]:
+
+# sorted_features = ['thal', 'num_major_vessels', 'st_depression', 'chest_pain', 'slope', 'max_hr', 'resting_bp', 'age', 'cholesterol', 'exercise_induced_angina', 'sex', 'ecg', 'blood_sugar']
+# important_feature_df = pd.DataFrame()
+# new_feature_set = sorted_features
+# for _ in sorted_features:
+#     new_feature_set.pop()
+#     print(features[new_feature_set])
+# features[['age', 'sex']]
+
+
+# In[366]:
 
 def load_pickle(pickle):
     df = pd.read_pickle(pickle)
     return df
-df9 = load_pickle('combined_df2015-05-06 23:18:19.950979.pickle')
+df9 = load_pickle('all_estimators.pickle')
 
 
 # In[98]:
@@ -527,14 +562,24 @@ df9 = load_pickle('combined_df2015-05-06 23:18:19.950979.pickle')
 # df9.set_index(['Feature'], inplace=True)
 
 
-# In[128]:
+# In[556]:
 
 # df9[(df9['Feature'] == 'multi')]['Accuracy'].max()
+# df9.groupby('Feature')['Accuracy'].value_counts()
+# df9.sort('Accuracy')
+df9.sort('Accuracy', ascending=False).groupby('Feature').first()[['Estimator','Accuracy','Accuracy_best']]
+# gb = df9.groupby('Feature')
+# gb.first()
 
 
-# In[134]:
+# In[487]:
 
 # df9[(df9['Feature'] == 'multi')]
 idx = df9.groupby(['Feature'])['Accuracy'].transform(max) == df9['Accuracy']
 df9[idx][['Feature', 'Estimator','Accuracy', 'Accuracy_best']]
+
+
+# In[ ]:
+
+
 

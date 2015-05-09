@@ -12,12 +12,13 @@ import datetime
 from collections import defaultdict
 from prettytable import PrettyTable
 import itertools
-import math
+import pickle
 
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import StandardScaler
+from sklearn.cross_validation import cross_val_score
 
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -41,6 +42,11 @@ from sklearn.metrics import f1_score
 # pd.set_option('display.max_rows', 500)
 # pd.set_option('display.max_columns', 500)
 # pd.set_option('display.width', 1000)
+
+
+def grab_pickle(filename):
+    with open(filename, "rb ") as f:
+        return pickle.load(f)
 
 
 def get_sample_dataset(dataset='processed.cleveland.data'):
@@ -94,27 +100,27 @@ def create_estimator_database(features, response, caller, tuning):
     estimator_df = pd.DataFrame(columns=[columns])
 
     # # for testing. remove next line after finished
-    # estimators = ['gaussian', 'logistic']
+    # estimators = ['linear', 'gaussian', 'logistic']
 
     train = [X_train, y_train]
     test = [X_test, y_test]
     for estimator in estimators:
         if estimator == 'linear':
-            scores_dict, model = linear(train, test)
+            scores_dict, model = linear(features, response, train, test)
             score, best = scores_dict['accuracy']
             evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, 0, 0, 0, 0]
         elif estimator == 'knn':
-            scores_dict, model = knn(train, test, tuning)
+            scores_dict, model = knn(features, response, train, test, tuning)
         elif estimator == 'logistic':
-            scores_dict, model = logistic(train, test, tuning)
+            scores_dict, model = logistic(features, response, train, test, tuning)
         elif estimator == 'gaussian':
-            scores_dict, model = gaussian(train, test, tuning)
+            scores_dict, model = gaussian(features, response, train, test, tuning)
         elif estimator == 'svc':
-            scores_dict, model = support_vector(train, test, tuning)
+            scores_dict, model = support_vector(features, response, train, test, tuning)
         elif estimator == 'decision_tree':
-            scores_dict, model = decision_tree(train, test, tuning)
+            scores_dict, model = decision_tree(features, response, train, test, tuning)
         elif estimator == 'random_forest':
-            scores_dict, model = random_forest(train, test, tuning)
+            scores_dict, model = random_forest(features, response, train, test, tuning)
         else:
             raise ValueError('Unknown estimator: {0}'.format(estimator))
         if estimator == 'linear':
@@ -147,13 +153,34 @@ def single_feature(features, response, tuning):
     return single_feature_df
 
 
-def multi_feature(features, response, tuning, combination_size):
-    pass
-    # this is going to take forever as a factorial. won't work for anything more than a handful of features
+def double_feature(features, response, tuning):
     feature_list = []
-    total_combinations = math.factorial(len(features.columns))
     count = 0
-    for num in range(2, len(features.columns)):
+    for num in range(2, 3):
+        feature_list.extend([list(i) for i in itertools.combinations(features, num)])
+
+    double_feature_df = pd.DataFrame()
+    for i in feature_list:
+        print("Working on: {0}".format(i))
+        multi_f = features[i]
+        caller = " : ".join(i)
+        estimator_df = create_estimator_database(multi_f, response, caller, tuning)
+        double_feature_df = double_feature_df.append(estimator_df)
+        count += 1
+        remaining = count / len(feature_list) * 100.0
+        sys.stdout.write('\r' + str("Phase I: %f" % remaining) + "%\n")
+        sys.stdout.flush()
+    return double_feature_df
+
+
+def multi_feature(features, response, tuning):
+    # uses a trimmed feature set.
+    # this is going to take forever. won't work for anything more than ten features.
+    # combination_size is the upper limit so will not make combinations at that size but will make all the combinations below it
+    feature_list = []
+    count = 0
+    for num in range(3, len(features.columns)):
+    # for num in range(2, combination_size):
         feature_list.extend([list(i) for i in itertools.combinations(features, num)])
 
     multi_feature_df = pd.DataFrame()
@@ -164,11 +191,11 @@ def multi_feature(features, response, tuning, combination_size):
         estimator_df = create_estimator_database(multi_f, response, caller, tuning)
         multi_feature_df = multi_feature_df.append(estimator_df)
         count += 1
-        remaining = count / total_combinations * 100.0
-        sys.stdout.write('\r' + str("%f" % remaining) + "%\n")
+        remaining = count / len(feature_list) * 100.0
+        sys.stdout.write('\r' + str("Phase II: %f" % remaining) + "%\n")
         sys.stdout.flush()
 
-        if count == 100:
+        if count == 200:
             dt = str(datetime.datetime.now())
             estimator_df.to_pickle(dt+'.pkl')
     return multi_feature_df
@@ -176,6 +203,8 @@ def multi_feature(features, response, tuning, combination_size):
 
 def hyper_parameter_full_report(estimator, parameters, train, test, model_name):
     # spits this output to a file instead of screen. the whole enchilada.
+    X_train, y_train = train
+    X_test, y_test = test
     scores = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
     with open('hyper_parameter_full_report.txt', 'wb') as f:
         for score in scores:
@@ -196,21 +225,23 @@ def hyper_parameter_full_report(estimator, parameters, train, test, model_name):
             f.write("\n")
 
 
-def grid_squid(estimator, parameters, train, test, model_name, tuning=False):
+def grid_squid(estimator, parameters, train, test, features, response, model_name, tuning=False):
     '''
     runs all the parameters specified and returns the best model
     '''
     X_train, y_train = train
     X_test, y_test = test
+    X = features
+    y = response
     if model_name == 'Linear Regression':
         print("Working on "+model_name)
         print("# Tuning hyper-parameters for %s" % tuning)
-        clf = GridSearchCV(estimator, parameters, cv=5, n_jobs=-1)
+        clf = GridSearchCV(estimator, parameters, cv=3, n_jobs=-1)
         clf.fit(X_train, y_train)
         print("Best parameters set found on development set:")
         print(clf.best_params_)
         print("\n")
-        test_score = r2_score(y_test, clf.predict(X_test))
+        test_score = np.mean(cross_val_score(estimator, X, y, cv=10))
         return test_score, clf.best_params_, clf
     else:
         if not tuning:
@@ -221,21 +252,26 @@ def grid_squid(estimator, parameters, train, test, model_name, tuning=False):
         for score in scores:
             print("Working on "+model_name)
             print("# Tuning hyper-parameters for %s" % score)
-            clf = GridSearchCV(estimator, parameters, cv=5, scoring=score, n_jobs=-1)
+            clf = GridSearchCV(estimator, parameters, cv=3, scoring=score, n_jobs=-1)
             clf.fit(X_train, y_train)
             print("Best parameters set found on development set:")
             print(clf.best_params_)
             print("\n")
             if score == 'accuracy':
-                test_score = accuracy_score(y_test, clf.predict(X_test))
+                # test_score = accuracy_score(y_test, clf.predict(X_test))
+                test_score = np.mean(cross_val_score(estimator, X, y, scoring=score, cv=10))
             elif score == 'precision':
-                test_score = precision_score(y_test, clf.predict(X_test))
+                # test_score = precision_score(y_test, clf.predict(X_test))
+                test_score = np.mean(cross_val_score(estimator, X, y, scoring=score, cv=10))
             elif score == 'recall':
-                test_score = recall_score(y_test, clf.predict(X_test))
+                # test_score = recall_score(y_test, clf.predict(X_test))
+                test_score = np.mean(cross_val_score(estimator, X, y, scoring=score, cv=10))
             elif score == 'f1':
-                test_score = f1_score(y_test, clf.predict(X_test))
+                # test_score = f1_score(y_test, clf.predict(X_test))
+                test_score = np.mean(cross_val_score(estimator, X, y, scoring=score, cv=10))
             elif score == 'roc_auc':
-                test_score = roc_auc_score(y_test, clf.predict(X_test))
+                # test_score = roc_auc_score(y_test, clf.predict(X_test))
+                test_score = np.mean(cross_val_score(estimator, X, y, scoring=score, cv=10))
             score_dict[score] = (test_score, clf.best_params_)
         return score_dict, clf
 
@@ -269,75 +305,75 @@ def linear_foward_selection(X_train, y_train):
     return model
 
 
-def linear(train, test):
+def linear(features, response, train, test,):
     '''
     linear regression. using R-squared for accuracy here
     '''
     tuning = 'accuracy'
     linear_reg = LinearRegression()
     parameters = {'normalize':[True, False]}
-    score, best_param, model = grid_squid(linear_reg, parameters, train, test, 'Linear Regression', tuning)
+    score, best_param, model = grid_squid(linear_reg, parameters, train, test, features, response, 'Linear Regression', tuning)
     return {tuning: (score, best_param)}, model
     # implement foward selection for the number of variables
 
 
-def knn(train, test, tuning):
+def knn(features, response, train, test, tuning):
     '''
     K-nearest neighbor.
     '''
     knn = KNeighborsClassifier()
     parameters = {'n_neighbors':[10, 20, 30, 40, 50, 60], 'weights':['uniform', 'distance'], 'algorithm':['ball_tree', 'kd_tree', 'brute', 'auto'], 'leaf_size':[10,20,30,40,50,60], 'p':[1,2]}
-    scores_dict, model = grid_squid(knn, parameters, train, test, 'KNN', tuning)
+    scores_dict, model = grid_squid(knn, parameters, train, test, features, response, 'KNN', tuning)
     return scores_dict, model
 
 
-def logistic(train, test, tuning):
+def logistic(features, response, train, test, tuning):
     '''
     Logistic regression.
     '''
     log_reg = LogisticRegression()
     parameters = {'penalty':['l1','l2'], 'solver':['liblinear','lbfgs','newton-cg']}
-    scores_dict, model = grid_squid(log_reg, parameters, train, test, 'Logistic Regression', tuning)
+    scores_dict, model = grid_squid(log_reg, parameters, train, test, features, response, 'Logistic Regression', tuning)
     return scores_dict, model
 
 
-def gaussian(train, test, tuning):
+def gaussian(features, response, train, test, tuning):
     '''
     Gaussian NB
     '''
     gaussian = GaussianNB()
     parameters = {}
-    scores_dict, model = grid_squid(gaussian, parameters, train, test, 'Gaussian NB', tuning)
+    scores_dict, model = grid_squid(gaussian, parameters, train, test, features, response, 'Gaussian NB', tuning)
     return scores_dict, model
 
 
-def support_vector(train, test, tuning):
+def support_vector(features, response, train, test, tuning):
     '''
     Support vector classification
     '''
     svc = SVC()
     parameters = {'probability':[True], 'C': [1, 10, 100, 1000], 'degree':[1,3,5,7], 'gamma': [0.0, 0.001, 0.0001], 'shrinking':[True, False]}
-    scores_dict, model = grid_squid(svc, parameters, train, test, 'SVC', tuning)
+    scores_dict, model = grid_squid(svc, parameters, train, test, features, response, 'SVC', tuning)
     return scores_dict, model
 
 
-def decision_tree(train, test, tuning):
+def decision_tree(features, response, train, test, tuning):
     '''
     Decision Tree classifiers
     '''
     dtc = DecisionTreeClassifier()
     parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30]}
-    scores_dict, model = grid_squid(dtc, parameters, train, test, 'DTC', tuning)
+    scores_dict, model = grid_squid(dtc, parameters, train, test, features, response, 'DTC', tuning)
     return scores_dict, model
 
 
-def random_forest(train, test, tuning):
+def random_forest(features, response, train, test, tuning):
     '''
     Random forest classifier
     '''
     rfc = RandomForestClassifier()
     parameters = {'max_features':['auto', 'sqrt', 'log2', None], 'max_depth':[1, 5, 10, 15, 20, 25, 30], 'max_leaf_nodes':[2, 5, 10, 15, 20, 25, 30], 'bootstrap':[True, False]}
-    scores_dict, model = grid_squid(rfc, parameters, train, test, 'RFC', tuning)
+    scores_dict, model = grid_squid(rfc, parameters, train, test, features, response, 'RFC', tuning)
     return scores_dict, model
 
 
@@ -387,15 +423,23 @@ def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'
 def main():
     # ###### set tuning below to an evaluation metric to just judge that.
     # set it to False to have it evaluate all metrics
-    # tuning = 'accuracy'
-    tuning = False
+    tuning = 'accuracy'
+    # tuning = False
 
+    # evaluates all together, all alone, and all pairs for all features.
+    # then evaluates for all combinations for a trimmed set of features (see parmesan).
     all_features_df = all_features(f, r, tuning)
-    # multi_feature_df = multi_feature(f, r, tuning)
     single_feature_df = single_feature(f, r, tuning)
-    # combined_df = all_features_df.append(multi_feature_df)
-    # combined_df = combined_df.append(single_feature_df)
-    combined_df = all_features_df.append(single_feature_df)
+    double_feature_df = double_feature(f, r, tuning)
+    # trimmed feature set for multi
+    # get new trimmed feature set
+    dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
+    trimmed_features = f.drop(dropping, axis=1)
+    multi_feature_df = multi_feature(trimmed_features, r, tuning)
+
+    combined_df = all_features_df.append(multi_feature_df)
+    combined_df = combined_df.append(double_feature_df)
+    combined_df = combined_df.append(single_feature_df)
     save_dataframe(combined_df, 'combined_df')
 
     # if plots:
@@ -410,12 +454,13 @@ if __name__ == '__main__':
         sys.argv[1]
     except:
         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-        f, r, data = get_sample_dataset()
+        f, r, data = get_sample_dataset()   
         plots = True
     else:
         estimators = sys.argv[1]
-        features = sys.argv[2]
-        response = sys.argv[3]
-        data = sys.arvg[4]
+        feature_labels = sys.argv[2]
+        response_label = sys.argv[3]
+        data_file = sys.arvg[4]
         plots = sys.argv[5]
+        # f, r = data_processor(feature_labels, resonse_label, data_file)
     main()
