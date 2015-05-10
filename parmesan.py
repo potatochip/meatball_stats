@@ -3,17 +3,25 @@ from prettytable import PrettyTable
 import datetime
 from collections import defaultdict, Counter
 import pickle
-from pprint import pprint
+from prettytable import PrettyTable
+import itertools
 
 from sklearn.feature_selection import RFE
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import ExtraTreesClassifier
+
+from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 
 # print dataframe to screen with enough room
 # pd.set_option('display.height', 1000)
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
+pd.set_option('display.max_rows', 1000)
+pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
 
 
@@ -71,8 +79,9 @@ def max_scores(dataframe, tuning=False):
     else:
         evaluators = [tuning]
     for evaluator in evaluators:
-        idx = dataframe.groupby(['Feature'])[evaluator].transform(max) == dataframe[evaluator]
-        max_evaluators[evaluator] = dataframe[idx][['Feature', 'Estimator', evaluator, evaluator+'_best']]
+        # idx = dataframe.groupby(['Feature'])[evaluator].transform(max) == dataframe[evaluator]
+        # max_evaluators[evaluator] = dataframe[idx][['Feature', 'Estimator', evaluator, evaluator+'_best']]
+        max_evaluators = dataframe.sort(evaluator, ascending=False).groupby('Feature').first()[['Estimator', evaluator, evaluator+'_best']]
     return max_evaluators
 
 
@@ -87,9 +96,46 @@ def make_plots():
     pass
 
 
-def make_prediction():
+def make_model(model_data_file, feature_list, est):
+    features = model_data_file[feature_list]
+    model = est.fit(features, response)
+    return model
+
+
+def make_prediction(model_data_file, estimator_list, feature_list, response, feature_values=[]):
     # make prediction given feature(s) and model
-    pass
+    if not feature_values:
+        for i in feature_list:
+            x = float(raw_input("Value for {0}: ".format(i)))
+            feature_values.append(x)
+    # go through all the permutations since storing it to csv screwed up the order of all the combinations
+    for i in itertools.permutations(feature_list):
+        index = " : ".join(i)
+        try:
+            indexer = estimator_list.loc[index]
+            break
+        except:
+            pass
+    e = indexer.Estimator
+    parameters = indexer.Accuracy_best
+    accuracy = indexer.Accuracy
+    if e == 'linear':
+        est = LinearRegression(**parameters)
+    elif e == 'knn':
+        est = KNeighborsClassifier(**parameters)
+    elif e == 'logistic':
+        est = LogisticRegression(**parameters)
+    elif e == 'gaussian':
+        est = GaussianNB(**parameters)
+    elif e == 'svc':
+        est = SVC(**parameters)
+    elif e == 'decision_tree':
+        est = DecisionTreeClassifier(**parameters)
+    elif e == 'random_forest':
+        est = RandomForestClassifier(**parameters)
+    model = make_model(model_data_file, feature_list, est)
+    prediction = model.predict(feature_values)[0]
+    print("We are {0}% sure that the your diagnosis for heart disease will be {1}".format(accuracy*100, prediction))
 
 
 def rfe_trim(features, response, n_features_to_eliminate=4):
@@ -134,6 +180,15 @@ def talking_to_trees(features, response):
     print(Counter(mylist))
 
 
+def pretty_print_sorted(dataframe, column=False):
+    # dataframe.reset_index(inplace=True)
+    if column: dataframe.sort(column, inplace=True)
+    pt = PrettyTable()
+    for i in dataframe.columns:
+        pt.add_column(i, max_accuracy[i].tolist())
+    print pt
+
+
 def save_pickle(data, filename):
     with open(filename, 'wb') as f:
         pickle.dump(data, f)
@@ -144,14 +199,17 @@ def save_pickle(data, filename):
 # pickle = 'combined_df2015-05-06 23:18:19.950979.pickle'
 # recover_pickle(pickle, filename)
 
-
-# df = load_pickle('all_estimators.pickle')
+# # get max evaluators
+# df = load_pickle('cleveland_final.pickle')
 # tuning='Accuracy'
-# max_evaluators = max_scores(df, tuning)[tuning]
-# print max_evaluators
+# max_accuracy = max_scores(df, tuning)
+# max_accuracy.to_csv('cleveland_max_accuracy.csv')
+# max_accuracy.to_pickle('cleveland_max_accuracy.pickle')
+# max_accuracy.reset_index(inplace=True)
+# pretty_print_sorted(max_accuracy, 'Accuracy')
 
 # # comparing trimming methods
-features, response, df = get_sample_dataset()
+# features, response, df = get_sample_dataset()
 # rfe_features = rfe_trim(features, response)
 # data = (rfe_features, response)
 # save_pickle(data, 'rfe_features.csv')
@@ -159,4 +217,12 @@ features, response, df = get_sample_dataset()
 # data = (tree_features, response)
 # save_pickle(data, 'tree_features.csv')
 
-talking_to_trees(features, response)
+# # rank important features
+# features, response, df = get_sample_dataset()
+# talking_to_trees(features, response)
+
+# make prediction based on best estimator for cleveland data
+f, response, data_file = get_sample_dataset()
+best_estimators = load_pickle('cleveland_max_accuracy.pickle')
+interested_features = ['age', 'resting_bp', 'chest_pain']
+make_prediction(data_file, best_estimators, interested_features, response)

@@ -548,12 +548,12 @@ features.drop(dropping, axis=1)
 # features[['age', 'sex']]
 
 
-# In[366]:
+# In[702]:
 
 def load_pickle(pickle):
     df = pd.read_pickle(pickle)
     return df
-df9 = load_pickle('all_estimators.pickle')
+df9 = load_pickle('cleveland_final.pickle')
 
 
 # In[98]:
@@ -562,24 +562,38 @@ df9 = load_pickle('all_estimators.pickle')
 # df9.set_index(['Feature'], inplace=True)
 
 
-# In[556]:
+# In[709]:
 
 # df9[(df9['Feature'] == 'multi')]['Accuracy'].max()
 # df9.groupby('Feature')['Accuracy'].value_counts()
 # df9.sort('Accuracy')
-df9.sort('Accuracy', ascending=False).groupby('Feature').first()[['Estimator','Accuracy','Accuracy_best']]
+max_accuracy = df9.sort('Accuracy', ascending=False).groupby('Feature').first()[['Estimator','Accuracy','Accuracy_best']]
 # gb = df9.groupby('Feature')
 # gb.first()
+max_accuracy.head()
 
 
-# In[487]:
+# In[708]:
 
 # df9[(df9['Feature'] == 'multi')]
-idx = df9.groupby(['Feature'])['Accuracy'].transform(max) == df9['Accuracy']
-df9[idx][['Feature', 'Estimator','Accuracy', 'Accuracy_best']]
+# idx = df9.groupby(['Feature'])['Accuracy'].transform(max) == df9['Accuracy']
+# df9[idx][['Feature', 'Estimator','Accuracy', 'Accuracy_best']].sort('Accuracy')
 
 
-# In[ ]:
+# In[725]:
+
+max_accuracy.loc['age']
 
 
+# In[734]:
+
+x=max_accuracy.loc['age'].Accuracy_best
+x
+
+
+# In[758]:
+
+model = SVC(**x)
+model.fit(features[['age', 'sex', 'chest_pain', 'cholesterol']], response)
+model.predict([67,1,4,200])
 

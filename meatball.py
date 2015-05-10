@@ -69,6 +69,19 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     return features, response, df
 
 
+def data_processor(feature_labels, resonse_label, data_file, header):
+    if header:
+        df = pd.DataFrame.from_csv(data_file, header=0, index_col=None)
+    else:
+        df = pd.DataFrame.from_csv(data_file, header=-1, index_col=None)
+    df.columns = feature_labels.append(response)
+    df = df.convert_objects(convert_numeric=True)
+    df.dropna(inplace=True)
+    features = df.drop(response, axis=1)
+    response = df[response]
+    return features, response, df
+
+
 def save_dataframe(dataframe, filename):
     dt = str(datetime.datetime.now())
     filename = filename + '-' + dt
@@ -442,25 +455,40 @@ def main():
     combined_df = combined_df.append(single_feature_df)
     save_dataframe(combined_df, 'combined_df')
 
-    # if plots:
-    #     model = 0
-    #     model_name = 'linear'
-    #     response = 'diagnosis'
-    #     make_plot(X_test, y_test, model, test_data, model_name, features, response)
+    if plots:
+        model = 0
+        model_name = 'linear'
+        response = 'diagnosis'
+        make_plot(X_test, y_test, model, test_data, model_name, features, response)
 
+# # run program on sample data
+# estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
+# f, r, data = get_sample_dataset()   
+# plots = False
+# main()
 
-if __name__ == '__main__':
-    try:
-        sys.argv[1]
-    except:
-        estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-        f, r, data = get_sample_dataset()   
-        plots = True
-    else:
-        estimators = sys.argv[1]
-        feature_labels = sys.argv[2]
-        response_label = sys.argv[3]
-        data_file = sys.arvg[4]
-        plots = sys.argv[5]
-        # f, r = data_processor(feature_labels, resonse_label, data_file)
-    main()
+# run program on custom data
+estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
+feature_labels = ['words', 'words']
+response_label = 'diagnosis'
+data_file = 'standford.csv'
+header = True
+f, r, data = data_processor(feature_labels, resonse_label, data_file, header)
+plots = False
+main()
+
+# if __name__ == '__main__':
+#     try:
+#         sys.argv[1]
+#     except:
+#         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
+#         f, r, data = get_sample_dataset()   
+#         plots = True
+#     else:
+#         estimators = sys.argv[1]
+#         feature_labels = sys.argv[2]
+#         response_label = sys.argv[3]
+#         data_file = sys.arvg[4]
+#         plots = sys.argv[5]
+#         # f, r = data_processor(feature_labels, response_label, data_file)
+#     main()

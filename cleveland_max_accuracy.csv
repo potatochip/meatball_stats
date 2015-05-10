@@ -1,0 +1,558 @@
+Feature,Estimator,Accuracy,Accuracy_best
+age,svc,0.6331034482758621,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : blood_sugar,logistic,0.6293103448275862,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain,svc,0.7541379310344827,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : cholesterol,knn,0.7542528735632184,"{'n_neighbors': 50, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : cholesterol : exercise_induced_angina,svc,0.7541379310344828,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : cholesterol : exercise_induced_angina : num_major_vessels,knn,0.8014942528735632,"{'n_neighbors': 60, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8349425287356322,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : cholesterol : exercise_induced_angina : st_depression,svc,0.7741379310344828,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,knn,0.801264367816092,"{'n_neighbors': 20, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,svc,0.8313793103448276,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : exercise_induced_angina : st_depression : thal,gaussian,0.8183908045977011,{}
+age : chest_pain : cholesterol : exercise_induced_angina : thal,logistic,0.8183908045977011,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : cholesterol : max_hr,svc,0.7539080459770114,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina,svc,0.7303448275862069,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7947126436781609,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,svc,0.8349425287356322,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression,svc,0.7709195402298852,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8179310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.84816091954023,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.8182758620689656,{}
+age : chest_pain : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.8318390804597702,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : max_hr : num_major_vessels,svc,0.7981609195402298,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : num_major_vessels : thal,logistic,0.824712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : max_hr : st_depression,svc,0.7640229885057472,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : st_depression : num_major_vessels,knn,0.7981609195402298,"{'n_neighbors': 60, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : chest_pain : cholesterol : max_hr : st_depression : num_major_vessels : thal,logistic,0.831264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : max_hr : st_depression : thal,svc,0.8047126436781611,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : max_hr : thal,logistic,0.801264367816092,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : cholesterol : num_major_vessels,knn,0.781264367816092,"{'n_neighbors': 50, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : chest_pain : cholesterol : num_major_vessels : thal,svc,0.8111494252873565,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : cholesterol : st_depression,gaussian,0.7540229885057472,{}
+age : chest_pain : cholesterol : st_depression : num_major_vessels,logistic,0.7845977011494253,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : st_depression : num_major_vessels : thal,logistic,0.8245977011494254,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : st_depression : thal,logistic,0.811264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : cholesterol : thal,logistic,0.7841379310344828,"{'penalty': 'l2', 'solver': 'liblinear'}"
+age : chest_pain : exercise_induced_angina,svc,0.7606896551724138,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : exercise_induced_angina : num_major_vessels,logistic,0.7879310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : exercise_induced_angina : num_major_vessels : thal,knn,0.8419540229885059,"{'n_neighbors': 20, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : exercise_induced_angina : st_depression,svc,0.7706896551724138,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8010344827586208,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8347126436781609,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : exercise_induced_angina : st_depression : thal,gaussian,0.81183908045977,{}
+age : chest_pain : exercise_induced_angina : thal,logistic,0.8218390804597702,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr,gaussian,0.7577011494252873,{}
+age : chest_pain : max_hr : exercise_induced_angina,svc,0.7372413793103448,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7947126436781609,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : max_hr : exercise_induced_angina : num_major_vessels : thal,knn,0.8419540229885059,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : chest_pain : max_hr : exercise_induced_angina : st_depression,gaussian,0.7739080459770117,{}
+age : chest_pain : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8144827586206895,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,gaussian,0.8414942528735633,{}
+age : chest_pain : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.8214942528735631,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr : exercise_induced_angina : thal,logistic,0.8248275862068966,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr : num_major_vessels,logistic,0.7975862068965517,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr : num_major_vessels : thal,logistic,0.8316091954022988,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr : st_depression,logistic,0.7641379310344827,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : max_hr : st_depression : num_major_vessels,logistic,0.797816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : max_hr : st_depression : num_major_vessels : thal,logistic,0.8347126436781609,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : max_hr : st_depression : thal,logistic,0.8043678160919541,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : max_hr : thal,gaussian,0.801264367816092,{}
+age : chest_pain : num_major_vessels,knn,0.7645977011494254,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : num_major_vessels : thal,knn,0.8180459770114943,"{'n_neighbors': 40, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : resting_bp,svc,0.7506896551724138,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol,svc,0.7473563218390804,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina,svc,0.7642528735632184,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels,svc,0.7948275862068966,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8283908045977013,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression,svc,0.7775862068965518,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8078160919540232,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8279310344827587,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : thal,gaussian,0.8117241379310345,{}
+age : chest_pain : resting_bp : cholesterol : exercise_induced_angina : thal,logistic,0.8150574712643678,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : max_hr,gaussian,0.7406896551724138,{}
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina,svc,0.7472413793103448,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.8113793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8314942528735634,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression,svc,0.7944827586206897,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8145977011494253,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.8116091954022988,{}
+age : chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.8254022988505747,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : num_major_vessels,svc,0.791264367816092,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8282758620689655,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : st_depression,svc,0.7606896551724138,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels,logistic,0.7913793103448276,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels : thal,logistic,0.8245977011494254,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : max_hr : st_depression : thal,svc,0.801264367816092,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : max_hr : thal,gaussian,0.801264367816092,{}
+age : chest_pain : resting_bp : cholesterol : num_major_vessels,random_forest,0.7980459770114943,"{'max_features': 'log2', 'max_leaf_nodes': 2, 'bootstrap': False, 'max_depth': 1}"
+age : chest_pain : resting_bp : cholesterol : num_major_vessels : thal,random_forest,0.8114942528735632,"{'max_features': 'auto', 'max_leaf_nodes': 10, 'bootstrap': True, 'max_depth': 10}"
+age : chest_pain : resting_bp : cholesterol : st_depression,svc,0.7503448275862069,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : cholesterol : st_depression : num_major_vessels,knn,0.794367816091954,"{'n_neighbors': 20, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : chest_pain : resting_bp : cholesterol : st_depression : num_major_vessels : thal,logistic,0.8313793103448276,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : cholesterol : st_depression : thal,logistic,0.8044827586206897,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : cholesterol : thal,logistic,0.7910344827586208,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : exercise_induced_angina,svc,0.7573563218390804,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : exercise_induced_angina : num_major_vessels,knn,0.7982758620689656,"{'n_neighbors': 40, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : resting_bp : exercise_induced_angina : num_major_vessels : thal,logistic,0.8317241379310346,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : exercise_induced_angina : st_depression,svc,0.7710344827586207,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : chest_pain : resting_bp : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8079310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8278160919540231,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : exercise_induced_angina : st_depression : thal,logistic,0.8212643678160919,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : exercise_induced_angina : thal,logistic,0.8116091954022989,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr,svc,0.7505747126436783,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina,svc,0.764022988505747,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7979310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8382758620689655,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression,svc,0.7910344827586208,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels,svc,0.8144827586206898,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,gaussian,0.8449425287356324,{}
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.8078160919540232,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : max_hr : exercise_induced_angina : thal,logistic,0.8183908045977013,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : num_major_vessels,logistic,0.7905747126436783,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : num_major_vessels : thal,logistic,0.8282758620689655,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : st_depression,gaussian,0.7540229885057471,{}
+age : chest_pain : resting_bp : max_hr : st_depression : num_major_vessels,logistic,0.7979310344827587,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : chest_pain : resting_bp : max_hr : st_depression : num_major_vessels : thal,logistic,0.8347126436781609,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : st_depression : thal,logistic,0.8044827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : max_hr : thal,gaussian,0.8045977011494253,{}
+age : chest_pain : resting_bp : num_major_vessels,knn,0.774367816091954,"{'n_neighbors': 50, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : chest_pain : resting_bp : num_major_vessels : thal,knn,0.8216091954022989,"{'n_neighbors': 50, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : resting_bp : st_depression,gaussian,0.7339080459770114,{}
+age : chest_pain : resting_bp : st_depression : num_major_vessels,knn,0.7874712643678161,"{'n_neighbors': 60, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : chest_pain : resting_bp : st_depression : num_major_vessels : thal,logistic,0.8313793103448276,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : st_depression : thal,logistic,0.8078160919540232,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : resting_bp : thal,logistic,0.7908045977011495,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : st_depression,gaussian,0.7542528735632185,{}
+age : chest_pain : st_depression : num_major_vessels,logistic,0.791264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : st_depression : num_major_vessels : thal,logistic,0.8280459770114943,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : chest_pain : st_depression : thal,logistic,0.8145977011494253,"{'penalty': 'l2', 'solver': 'liblinear'}"
+age : chest_pain : thal,knn,0.7911494252873564,"{'n_neighbors': 60, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : cholesterol,logistic,0.6156321839080461,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : exercise_induced_angina,gaussian,0.7037931034482758,{}
+age : cholesterol : exercise_induced_angina : num_major_vessels,knn,0.7678160919540231,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+age : cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8113793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : exercise_induced_angina : st_depression,gaussian,0.7374712643678161,{}
+age : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7813793103448277,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8145977011494253,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : exercise_induced_angina : st_depression : thal,logistic,0.7877011494252874,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : exercise_induced_angina : thal,logistic,0.7711494252873564,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : max_hr,knn,0.6941379310344826,"{'n_neighbors': 20, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : cholesterol : max_hr : exercise_induced_angina,svc,0.7239080459770115,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,svc,0.7917241379310344,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8418390804597701,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : max_hr : exercise_induced_angina : st_depression,svc,0.764367816091954,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8049425287356321,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8347126436781609,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.791264367816092,{}
+age : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.7880459770114943,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : max_hr : num_major_vessels,svc,0.7547126436781609,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8114942528735632,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : max_hr : st_depression,svc,0.7442528735632185,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : max_hr : st_depression : num_major_vessels,knn,0.7851724137931034,"{'n_neighbors': 10, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : cholesterol : max_hr : st_depression : num_major_vessels : thal,logistic,0.8248275862068966,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : max_hr : st_depression : thal,svc,0.7975862068965517,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : cholesterol : max_hr : thal,svc,0.7741379310344828,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : num_major_vessels,logistic,0.7477011494252874,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : num_major_vessels : thal,logistic,0.7913793103448276,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : cholesterol : st_depression,svc,0.6968965517241379,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : st_depression : num_major_vessels,svc,0.7714942528735632,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : cholesterol : st_depression : num_major_vessels : thal,logistic,0.811264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : cholesterol : st_depression : thal,gaussian,0.7812643678160921,{}
+age : cholesterol : thal,svc,0.7675862068965518,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : ecg,svc,0.6163218390804597,"{'C': 1000, 'shrinking': False, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+age : exercise_induced_angina,svc,0.7104597701149424,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : exercise_induced_angina : num_major_vessels,svc,0.7748275862068966,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+age : exercise_induced_angina : num_major_vessels : thal,logistic,0.8113793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : exercise_induced_angina : st_depression,gaussian,0.7441379310344828,{}
+age : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7813793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8179310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : exercise_induced_angina : st_depression : thal,logistic,0.7911494252873563,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : exercise_induced_angina : thal,svc,0.781264367816092,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : max_hr,svc,0.7010344827586207,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : exercise_induced_angina,svc,0.727471264367816,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : exercise_induced_angina : num_major_vessels,svc,0.7816091954022989,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8349425287356322,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : exercise_induced_angina : st_depression,svc,0.7610344827586208,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8016091954022988,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8313793103448276,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.7911494252873563,{}
+age : max_hr : exercise_induced_angina : thal,svc,0.781264367816092,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : num_major_vessels,svc,0.7545977011494253,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : num_major_vessels : thal,logistic,0.8149425287356322,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : st_depression,logistic,0.7405747126436782,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : st_depression : num_major_vessels,logistic,0.777816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : max_hr : st_depression : num_major_vessels : thal,logistic,0.8181609195402298,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : max_hr : st_depression : thal,svc,0.7845977011494254,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : max_hr : thal,gaussian,0.7741379310344828,{}
+age : num_major_vessels,gaussian,0.7510344827586207,{}
+age : num_major_vessels : thal,logistic,0.7879310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp,logistic,0.6025287356321839,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol,gaussian,0.6059770114942529,{}
+age : resting_bp : cholesterol : exercise_induced_angina,svc,0.6903448275862069,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels,knn,0.7881609195402299,"{'n_neighbors': 20, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+age : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels : thal,gaussian,0.801609195402299,{}
+age : resting_bp : cholesterol : exercise_induced_angina : st_depression,gaussian,0.7475862068965518,{}
+age : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7813793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8079310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : exercise_induced_angina : st_depression : thal,logistic,0.787816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : exercise_induced_angina : thal,logistic,0.7742528735632184,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : max_hr,logistic,0.7039080459770115,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina,svc,0.7205747126436781,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7947126436781609,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,gaussian,0.8183908045977013,{}
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression,gaussian,0.7642528735632184,{}
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,gaussian,0.7947126436781609,{}
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8314942528735634,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.791264367816092,{}
+age : resting_bp : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.7710344827586207,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : cholesterol : max_hr : num_major_vessels,svc,0.7516091954022988,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : resting_bp : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8182758620689656,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : max_hr : st_depression,svc,0.7240229885057472,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels,logistic,0.781264367816092,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels : thal,logistic,0.8182758620689656,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : cholesterol : max_hr : st_depression : thal,svc,0.7877011494252875,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : cholesterol : max_hr : thal,logistic,0.7708045977011496,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : num_major_vessels,svc,0.7411494252873563,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : cholesterol : num_major_vessels : thal,svc,0.7780459770114942,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : cholesterol : st_depression,svc,0.7101149425287356,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+age : resting_bp : cholesterol : st_depression : num_major_vessels,logistic,0.764367816091954,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : cholesterol : st_depression : num_major_vessels : thal,logistic,0.8180459770114943,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : cholesterol : st_depression : thal,gaussian,0.7845977011494254,{}
+age : resting_bp : cholesterol : thal,logistic,0.7641379310344828,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : exercise_induced_angina,svc,0.7104597701149424,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : exercise_induced_angina : num_major_vessels,svc,0.7780459770114942,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : resting_bp : exercise_induced_angina : num_major_vessels : thal,logistic,0.8079310344827588,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : exercise_induced_angina : st_depression,gaussian,0.7442528735632183,{}
+age : resting_bp : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.784712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8043678160919541,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : exercise_induced_angina : st_depression : thal,logistic,0.7844827586206897,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : exercise_induced_angina : thal,svc,0.7780459770114942,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : max_hr,gaussian,0.6970114942528735,{}
+age : resting_bp : max_hr : exercise_induced_angina,svc,0.7306896551724138,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.8014942528735632,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8216091954022989,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : exercise_induced_angina : st_depression,gaussian,0.7641379310344827,{}
+age : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels,gaussian,0.7947126436781609,{}
+age : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8314942528735632,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.7844827586206897,{}
+age : resting_bp : max_hr : exercise_induced_angina : thal,logistic,0.7744827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : max_hr : num_major_vessels,svc,0.7650574712643677,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+age : resting_bp : max_hr : num_major_vessels : thal,logistic,0.8183908045977013,"{'penalty': 'l2', 'solver': 'liblinear'}"
+age : resting_bp : max_hr : st_depression,logistic,0.7374712643678161,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : st_depression : num_major_vessels,logistic,0.7811494252873563,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : st_depression : num_major_vessels : thal,logistic,0.814712643678161,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+age : resting_bp : max_hr : st_depression : thal,svc,0.7811494252873563,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : resting_bp : max_hr : thal,logistic,0.7742528735632186,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : num_major_vessels,svc,0.7411494252873563,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : resting_bp : num_major_vessels : thal,logistic,0.777816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : st_depression,gaussian,0.6834482758620689,{}
+age : resting_bp : st_depression : num_major_vessels,logistic,0.7677011494252873,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : st_depression : num_major_vessels : thal,logistic,0.811264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : st_depression : thal,logistic,0.7845977011494254,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : resting_bp : thal,svc,0.7609195402298851,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : sex,gaussian,0.6602298850574713,{}
+age : slope,gaussian,0.6966666666666668,{}
+age : st_depression,logistic,0.7002298850574713,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : st_depression : num_major_vessels,svc,0.7748275862068966,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+age : st_depression : num_major_vessels : thal,logistic,0.8044827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+age : st_depression : thal,gaussian,0.7812643678160921,{}
+age : thal,svc,0.7642528735632185,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+all,gaussian,0.8450574712643679,{}
+blood_sugar,random_forest,0.5388505747126436,"{'max_features': 'log2', 'max_leaf_nodes': 25, 'bootstrap': True, 'max_depth': 10}"
+blood_sugar : ecg,svc,0.5858620689655173,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+blood_sugar : exercise_induced_angina,random_forest,0.7104597701149424,"{'max_features': 'auto', 'max_leaf_nodes': 2, 'bootstrap': True, 'max_depth': 1}"
+blood_sugar : max_hr,logistic,0.6972413793103449,"{'penalty': 'l1', 'solver': 'liblinear'}"
+blood_sugar : num_major_vessels,svc,0.7409195402298852,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+blood_sugar : slope,logistic,0.6864367816091953,"{'penalty': 'l1', 'solver': 'liblinear'}"
+blood_sugar : st_depression,random_forest,0.6872413793103449,"{'max_features': 'log2', 'max_leaf_nodes': 20, 'bootstrap': True, 'max_depth': 1}"
+blood_sugar : thal,svc,0.7642528735632185,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain,random_forest,0.7541379310344827,"{'max_features': 'auto', 'max_leaf_nodes': 2, 'bootstrap': True, 'max_depth': 1}"
+chest_pain : blood_sugar,logistic,0.7541379310344827,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol,svc,0.7508045977011494,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : exercise_induced_angina,svc,0.750919540229885,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : exercise_induced_angina : num_major_vessels,svc,0.791264367816092,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8416091954022988,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : exercise_induced_angina : st_depression,logistic,0.7640229885057472,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8044827586206896,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,gaussian,0.8380459770114943,{}
+chest_pain : cholesterol : exercise_induced_angina : st_depression : thal,logistic,0.8082758620689656,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : exercise_induced_angina : thal,svc,0.80183908045977,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : cholesterol : max_hr,svc,0.7405747126436781,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina,svc,0.7401149425287357,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,svc,0.8079310344827586,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8347126436781609,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression,logistic,0.7740229885057472,"{'penalty': 'l2', 'solver': 'liblinear'}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8179310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8448275862068966,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.8214942528735631,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.8354022988505747,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : max_hr : num_major_vessels,logistic,0.7808045977011494,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8281609195402299,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : max_hr : st_depression,gaussian,0.7708045977011494,{}
+chest_pain : cholesterol : max_hr : st_depression : num_major_vessels,svc,0.8145977011494253,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : cholesterol : max_hr : st_depression : num_major_vessels : thal,gaussian,0.84816091954023,{}
+chest_pain : cholesterol : max_hr : st_depression : thal,svc,0.8113793103448277,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : max_hr : thal,logistic,0.8117241379310345,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : cholesterol : num_major_vessels,svc,0.7609195402298852,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : num_major_vessels : thal,svc,0.8145977011494253,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : cholesterol : st_depression,gaussian,0.7605747126436782,{}
+chest_pain : cholesterol : st_depression : num_major_vessels,logistic,0.7844827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : st_depression : num_major_vessels : thal,gaussian,0.8280459770114943,{}
+chest_pain : cholesterol : st_depression : thal,logistic,0.8045977011494253,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : cholesterol : thal,svc,0.774367816091954,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : ecg,svc,0.7441379310344828,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : exercise_induced_angina,svc,0.7541379310344827,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : exercise_induced_angina : num_major_vessels,decision_tree,0.7981609195402299,"{'max_features': 'log2', 'max_leaf_nodes': 15, 'max_depth': 5}"
+chest_pain : exercise_induced_angina : num_major_vessels : thal,logistic,0.8449425287356321,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : exercise_induced_angina : st_depression,knn,0.7710344827586206,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+chest_pain : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8078160919540229,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : exercise_induced_angina : st_depression : num_major_vessels : thal,gaussian,0.8347126436781609,{}
+chest_pain : exercise_induced_angina : st_depression : thal,gaussian,0.8151724137931036,{}
+chest_pain : exercise_induced_angina : thal,logistic,0.8050574712643679,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr,svc,0.7540229885057472,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : max_hr : exercise_induced_angina,logistic,0.7370114942528736,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : num_major_vessels,knn,0.8149425287356322,"{'n_neighbors': 20, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+chest_pain : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.831264367816092,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : st_depression,logistic,0.7840229885057471,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8111494252873562,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8414942528735633,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.8281609195402299,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : exercise_induced_angina : thal,logistic,0.8219540229885058,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : num_major_vessels,svc,0.7878160919540231,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : max_hr : num_major_vessels : thal,logistic,0.8316091954022988,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : st_depression,gaussian,0.7742528735632183,{}
+chest_pain : max_hr : st_depression : num_major_vessels,knn,0.8080459770114944,"{'n_neighbors': 60, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+chest_pain : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8448275862068966,{}
+chest_pain : max_hr : st_depression : thal,logistic,0.814712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : max_hr : thal,logistic,0.8014942528735632,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : num_major_vessels,svc,0.7575862068965518,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : num_major_vessels : thal,svc,0.8380459770114943,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp,svc,0.7574712643678161,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : cholesterol,svc,0.7474712643678161,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : cholesterol : exercise_induced_angina,gaussian,0.7406896551724138,{}
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels,svc,0.7980459770114943,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8350574712643679,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression,gaussian,0.7606896551724137,{}
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8078160919540232,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8345977011494254,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : st_depression : thal,gaussian,0.8117241379310345,{}
+chest_pain : resting_bp : cholesterol : exercise_induced_angina : thal,gaussian,0.7949425287356322,{}
+chest_pain : resting_bp : cholesterol : max_hr,logistic,0.7305747126436782,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina,svc,0.7505747126436781,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,svc,0.8180459770114943,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.0001, 'probability': True}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8382758620689655,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression,svc,0.7742528735632185,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,svc,0.8177011494252874,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,gaussian,0.8414942528735633,{}
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.8079310344827586,"{'penalty': 'l2', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.8185057471264369,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : cholesterol : max_hr : num_major_vessels,logistic,0.7974712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8216091954022989,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : st_depression,gaussian,0.7673563218390804,{}
+chest_pain : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels,logistic,0.7945977011494254,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8348275862068967,{}
+chest_pain : resting_bp : cholesterol : max_hr : st_depression : thal,logistic,0.8113793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : max_hr : thal,gaussian,0.8048275862068965,{}
+chest_pain : resting_bp : cholesterol : num_major_vessels,logistic,0.7708045977011495,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : num_major_vessels : thal,svc,0.8077011494252874,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : cholesterol : st_depression,gaussian,0.7571264367816093,{}
+chest_pain : resting_bp : cholesterol : st_depression : num_major_vessels,logistic,0.784367816091954,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : st_depression : num_major_vessels : thal,logistic,0.8380459770114943,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : st_depression : thal,logistic,0.8045977011494253,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : cholesterol : thal,logistic,0.777816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : exercise_induced_angina,gaussian,0.750919540229885,{}
+chest_pain : resting_bp : exercise_induced_angina : num_major_vessels,svc,0.7913793103448276,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : exercise_induced_angina : num_major_vessels : thal,logistic,0.8350574712643679,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : exercise_induced_angina : st_depression,gaussian,0.7708045977011495,{}
+chest_pain : resting_bp : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.811264367816092,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8345977011494254,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : exercise_induced_angina : st_depression : thal,gaussian,0.8151724137931036,{}
+chest_pain : resting_bp : exercise_induced_angina : thal,svc,0.7950574712643679,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : max_hr,logistic,0.7374712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina,svc,0.7605747126436782,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : num_major_vessels,svc,0.8044827586206896,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8349425287356322,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression,svc,0.7774712643678161,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels,svc,0.8111494252873565,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8448275862068966,"{'penalty': 'l2', 'solver': 'liblinear'}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : st_depression : thal,svc,0.8085057471264367,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+chest_pain : resting_bp : max_hr : exercise_induced_angina : thal,logistic,0.8050574712643679,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : max_hr : num_major_vessels,logistic,0.7941379310344827,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : max_hr : num_major_vessels : thal,gaussian,0.8282758620689655,{}
+chest_pain : resting_bp : max_hr : st_depression,gaussian,0.770689655172414,{}
+chest_pain : resting_bp : max_hr : st_depression : num_major_vessels,logistic,0.8079310344827586,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8349425287356323,{}
+chest_pain : resting_bp : max_hr : st_depression : thal,logistic,0.8145977011494253,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : max_hr : thal,gaussian,0.7944827586206897,{}
+chest_pain : resting_bp : num_major_vessels,logistic,0.7741379310344828,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : num_major_vessels : thal,svc,0.8214942528735631,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+chest_pain : resting_bp : st_depression,gaussian,0.7605747126436782,{}
+chest_pain : resting_bp : st_depression : num_major_vessels,logistic,0.7875862068965518,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : st_depression : num_major_vessels : thal,logistic,0.8380459770114943,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : resting_bp : st_depression : thal,logistic,0.801264367816092,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+chest_pain : resting_bp : thal,logistic,0.7844827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : slope,knn,0.7740229885057471,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 40, 'algorithm': 'ball_tree', 'p': 1}"
+chest_pain : st_depression,knn,0.7741379310344828,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 20, 'algorithm': 'ball_tree', 'p': 2}"
+chest_pain : st_depression : num_major_vessels,logistic,0.7944827586206898,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : st_depression : num_major_vessels : thal,gaussian,0.8280459770114943,{}
+chest_pain : st_depression : thal,logistic,0.8011494252873564,"{'penalty': 'l1', 'solver': 'liblinear'}"
+chest_pain : thal,gaussian,0.7742528735632185,{}
+cholesterol,knn,0.5819540229885057,"{'n_neighbors': 60, 'weights': 'uniform', 'leaf_size': 20, 'algorithm': 'kd_tree', 'p': 1}"
+cholesterol : blood_sugar,knn,0.5624137931034483,"{'n_neighbors': 10, 'weights': 'distance', 'leaf_size': 20, 'algorithm': 'ball_tree', 'p': 2}"
+cholesterol : ecg,svc,0.6159770114942529,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : exercise_induced_angina,svc,0.7104597701149424,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+cholesterol : exercise_induced_angina : num_major_vessels,knn,0.7674712643678161,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 20, 'algorithm': 'kd_tree', 'p': 1}"
+cholesterol : exercise_induced_angina : num_major_vessels : thal,logistic,0.8148275862068965,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+cholesterol : exercise_induced_angina : st_depression,gaussian,0.7406896551724138,{}
+cholesterol : exercise_induced_angina : st_depression : num_major_vessels,random_forest,0.784367816091954,"{'max_features': 'sqrt', 'max_leaf_nodes': 15, 'bootstrap': True, 'max_depth': 10}"
+cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8213793103448277,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : exercise_induced_angina : st_depression : thal,gaussian,0.787816091954023,{}
+cholesterol : exercise_induced_angina : thal,gaussian,0.764712643678161,{}
+cholesterol : max_hr,logistic,0.7003448275862069,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : exercise_induced_angina,logistic,0.7272413793103448,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : exercise_induced_angina : num_major_vessels,svc,0.7814942528735632,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8383908045977012,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+cholesterol : max_hr : exercise_induced_angina : st_depression,logistic,0.7575862068965517,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8116091954022989,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,knn,0.8350574712643679,"{'n_neighbors': 40, 'weights': 'distance', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+cholesterol : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.7945977011494253,{}
+cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.7879310344827587,"{'penalty': 'l2', 'solver': 'liblinear'}"
+cholesterol : max_hr : num_major_vessels,svc,0.7545977011494254,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : max_hr : num_major_vessels : thal,gaussian,0.8114942528735632,{}
+cholesterol : max_hr : st_depression,logistic,0.7374712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : st_depression : num_major_vessels,logistic,0.7711494252873564,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8180459770114943,{}
+cholesterol : max_hr : st_depression : thal,svc,0.7875862068965518,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+cholesterol : max_hr : thal,svc,0.791264367816092,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : num_major_vessels,logistic,0.7409195402298852,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : num_major_vessels : thal,logistic,0.7913793103448276,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : slope,logistic,0.6862068965517241,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : st_depression,svc,0.7068965517241378,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : st_depression : num_major_vessels,svc,0.7713793103448274,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+cholesterol : st_depression : num_major_vessels : thal,gaussian,0.8248275862068967,{}
+cholesterol : st_depression : thal,logistic,0.7845977011494254,"{'penalty': 'l1', 'solver': 'liblinear'}"
+cholesterol : thal,svc,0.7675862068965518,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+ecg,decision_tree,0.5858620689655173,"{'max_features': 'auto', 'max_leaf_nodes': 2, 'max_depth': 1}"
+ecg : exercise_induced_angina,svc,0.7104597701149424,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+ecg : max_hr,gaussian,0.7036781609195403,{}
+ecg : num_major_vessels,svc,0.7443678160919541,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+ecg : slope,svc,0.6797701149425286,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+ecg : st_depression,logistic,0.6972413793103449,"{'penalty': 'l2', 'solver': 'liblinear'}"
+ecg : thal,gaussian,0.7642528735632185,{}
+exercise_induced_angina,random_forest,0.7104597701149424,"{'max_features': 'auto', 'max_leaf_nodes': 2, 'bootstrap': True, 'max_depth': 1}"
+exercise_induced_angina : num_major_vessels,decision_tree,0.7680459770114942,"{'max_features': 'sqrt', 'max_leaf_nodes': 2, 'max_depth': 15}"
+exercise_induced_angina : num_major_vessels : thal,random_forest,0.8348275862068965,"{'max_features': 'log2', 'max_leaf_nodes': 15, 'bootstrap': True, 'max_depth': 5}"
+exercise_induced_angina : slope,knn,0.7203448275862069,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'brute', 'p': 1}"
+exercise_induced_angina : st_depression,logistic,0.7506896551724138,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7780459770114942,"{'penalty': 'l1', 'solver': 'liblinear'}"
+exercise_induced_angina : st_depression : num_major_vessels : thal,knn,0.8250574712643678,"{'n_neighbors': 50, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'brute', 'p': 2}"
+exercise_induced_angina : st_depression : thal,logistic,0.7675862068965518,"{'penalty': 'l1', 'solver': 'liblinear'}"
+exercise_induced_angina : thal,gaussian,0.7645977011494254,{}
+max_hr,logistic,0.7106896551724138,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : exercise_induced_angina,logistic,0.7237931034482761,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7848275862068965,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8349425287356322,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : exercise_induced_angina : st_depression,logistic,0.7708045977011493,"{'penalty': 'l2', 'solver': 'liblinear'}"
+max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.8049425287356321,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8313793103448276,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.7913793103448274,{}
+max_hr : exercise_induced_angina : thal,logistic,0.7881609195402299,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : num_major_vessels,logistic,0.7443678160919541,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : num_major_vessels : thal,gaussian,0.8150574712643678,{}
+max_hr : slope,logistic,0.7035632183908047,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : st_depression,logistic,0.7339080459770116,"{'penalty': 'l1', 'solver': 'liblinear'}"
+max_hr : st_depression : num_major_vessels,logistic,0.7777011494252875,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : st_depression : num_major_vessels : thal,logistic,0.8114942528735632,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+max_hr : st_depression : thal,svc,0.781264367816092,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+max_hr : thal,gaussian,0.7744827586206897,{}
+num_major_vessels,logistic,0.7443678160919541,"{'penalty': 'l1', 'solver': 'liblinear'}"
+num_major_vessels : thal,gaussian,0.7913793103448276,{}
+resting_bp,gaussian,0.5724137931034482,{}
+resting_bp : blood_sugar,logistic,0.562528735632184,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol,logistic,0.5755172413793103,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol : exercise_induced_angina,svc,0.7104597701149424,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : cholesterol : exercise_induced_angina : num_major_vessels,knn,0.7612643678160921,"{'n_neighbors': 10, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 1}"
+resting_bp : cholesterol : exercise_induced_angina : num_major_vessels : thal,gaussian,0.8117241379310345,{}
+resting_bp : cholesterol : exercise_induced_angina : st_depression,gaussian,0.7509195402298852,{}
+resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.784712643678161,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8044827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : exercise_induced_angina : st_depression : thal,logistic,0.7810344827586208,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol : exercise_induced_angina : thal,gaussian,0.7579310344827588,{}
+resting_bp : cholesterol : max_hr,logistic,0.7073563218390805,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina,gaussian,0.7203448275862069,{}
+resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7913793103448276,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8185057471264369,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression,gaussian,0.7708045977011494,{}
+resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7881609195402299,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,logistic,0.8179310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina : st_depression : thal,logistic,0.787816091954023,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol : max_hr : exercise_induced_angina : thal,logistic,0.777816091954023,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : num_major_vessels,gaussian,0.7444827586206897,{}
+resting_bp : cholesterol : max_hr : num_major_vessels : thal,logistic,0.8213793103448277,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : cholesterol : max_hr : st_depression,gaussian,0.7273563218390804,{}
+resting_bp : cholesterol : max_hr : st_depression : num_major_vessels,logistic,0.774367816091954,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8145977011494253,{}
+resting_bp : cholesterol : max_hr : st_depression : thal,svc,0.7877011494252874,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : cholesterol : max_hr : thal,logistic,0.7774712643678162,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : num_major_vessels,svc,0.7410344827586207,"{'C': 1000, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : cholesterol : num_major_vessels : thal,gaussian,0.781264367816092,{}
+resting_bp : cholesterol : st_depression,gaussian,0.6836781609195401,{}
+resting_bp : cholesterol : st_depression : num_major_vessels,logistic,0.7610344827586207,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : st_depression : num_major_vessels : thal,logistic,0.8248275862068967,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : cholesterol : st_depression : thal,gaussian,0.7780459770114942,{}
+resting_bp : cholesterol : thal,logistic,0.7642528735632185,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : ecg,logistic,0.5622988505747125,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : exercise_induced_angina,logistic,0.7071264367816091,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : exercise_induced_angina : num_major_vessels,svc,0.7645977011494253,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+resting_bp : exercise_induced_angina : num_major_vessels : thal,logistic,0.8079310344827588,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : exercise_induced_angina : st_depression,gaussian,0.7575862068965518,{}
+resting_bp : exercise_induced_angina : st_depression : num_major_vessels,logistic,0.7880459770114943,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : exercise_induced_angina : st_depression : num_major_vessels : thal,knn,0.8079310344827586,"{'n_neighbors': 40, 'weights': 'uniform', 'leaf_size': 10, 'algorithm': 'ball_tree', 'p': 2}"
+resting_bp : exercise_induced_angina : st_depression : thal,logistic,0.7709195402298852,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : exercise_induced_angina : thal,gaussian,0.7612643678160921,{}
+resting_bp : max_hr,svc,0.7039080459770115,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : max_hr : exercise_induced_angina,svc,0.7272413793103448,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : max_hr : exercise_induced_angina : num_major_vessels,logistic,0.7914942528735632,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : max_hr : exercise_induced_angina : num_major_vessels : thal,logistic,0.8249425287356322,"{'penalty': 'l2', 'solver': 'liblinear'}"
+resting_bp : max_hr : exercise_induced_angina : st_depression,gaussian,0.7708045977011493,{}
+resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels,gaussian,0.7881609195402299,{}
+resting_bp : max_hr : exercise_induced_angina : st_depression : num_major_vessels : thal,svc,0.8281609195402299,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : max_hr : exercise_induced_angina : st_depression : thal,gaussian,0.7842528735632184,{}
+resting_bp : max_hr : exercise_induced_angina : thal,logistic,0.7644827586206897,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : max_hr : num_major_vessels,logistic,0.7611494252873563,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : max_hr : num_major_vessels : thal,logistic,0.8113793103448277,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : max_hr : st_depression,logistic,0.7374712643678162,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : max_hr : st_depression : num_major_vessels,logistic,0.7742528735632184,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : max_hr : st_depression : num_major_vessels : thal,gaussian,0.8112643678160921,{}
+resting_bp : max_hr : st_depression : thal,gaussian,0.7810344827586209,{}
+resting_bp : max_hr : thal,logistic,0.7742528735632186,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : num_major_vessels,svc,0.7309195402298851,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+resting_bp : num_major_vessels : thal,gaussian,0.7879310344827586,{}
+resting_bp : slope,logistic,0.6793103448275861,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : st_depression,gaussian,0.6936781609195402,{}
+resting_bp : st_depression : num_major_vessels,logistic,0.764367816091954,"{'penalty': 'l1', 'solver': 'liblinear'}"
+resting_bp : st_depression : num_major_vessels : thal,logistic,0.8213793103448277,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+resting_bp : st_depression : thal,gaussian,0.7813793103448277,{}
+resting_bp : thal,logistic,0.7642528735632185,"{'penalty': 'l1', 'solver': 'liblinear'}"
+sex,svc,0.6166666666666667,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+sex : blood_sugar,logistic,0.6166666666666667,"{'penalty': 'l1', 'solver': 'liblinear'}"
+sex : chest_pain,decision_tree,0.7541379310344827,"{'max_features': None, 'max_leaf_nodes': 2, 'max_depth': 1}"
+sex : cholesterol,svc,0.6360919540229885,"{'C': 10, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+sex : ecg,random_forest,0.6396551724137931,"{'max_features': 'log2', 'max_leaf_nodes': 20, 'bootstrap': True, 'max_depth': 1}"
+sex : exercise_induced_angina,random_forest,0.7104597701149424,"{'max_features': 'auto', 'max_leaf_nodes': 5, 'bootstrap': True, 'max_depth': 1}"
+sex : max_hr,gaussian,0.7073563218390804,{}
+sex : num_major_vessels,decision_tree,0.774712643678161,"{'max_features': 'auto', 'max_leaf_nodes': 5, 'max_depth': 5}"
+sex : resting_bp,svc,0.6267816091954023,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+sex : slope,random_forest,0.7102298850574713,"{'max_features': 'log2', 'max_leaf_nodes': 15, 'bootstrap': True, 'max_depth': 1}"
+sex : st_depression,svc,0.741264367816092,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+sex : thal,svc,0.7642528735632185,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+slope,logistic,0.6864367816091953,"{'penalty': 'l1', 'solver': 'liblinear'}"
+slope : num_major_vessels,logistic,0.7542528735632185,"{'penalty': 'l1', 'solver': 'lbfgs'}"
+slope : thal,svc,0.7642528735632185,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+st_depression,random_forest,0.6972413793103448,"{'max_features': 'sqrt', 'max_leaf_nodes': 5, 'bootstrap': True, 'max_depth': 10}"
+st_depression : num_major_vessels,svc,0.761264367816092,"{'C': 100, 'shrinking': True, 'degree': 1, 'gamma': 0.001, 'probability': True}"
+st_depression : num_major_vessels : thal,gaussian,0.814712643678161,{}
+st_depression : slope,svc,0.7236781609195402,"{'C': 1, 'shrinking': True, 'degree': 1, 'gamma': 0.0, 'probability': True}"
+st_depression : thal,logistic,0.7779310344827586,"{'penalty': 'l1', 'solver': 'liblinear'}"
+thal,random_forest,0.7642528735632185,"{'max_features': 'auto', 'max_leaf_nodes': 2, 'bootstrap': True, 'max_depth': 1}"
