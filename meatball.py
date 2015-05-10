@@ -69,16 +69,20 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     return features, response, df
 
 
-def data_processor(feature_labels, resonse_label, data_file, header):
-    if header:
-        df = pd.DataFrame.from_csv(data_file, header=0, index_col=None)
+def data_processor(column_labels, response_label, data_file, header, index):
+    if header and index:
+        df = pd.DataFrame.from_csv(data_file, header=0, index_col=0)
     else:
         df = pd.DataFrame.from_csv(data_file, header=-1, index_col=None)
-    df.columns = feature_labels.append(response)
+    df.columns = column_labels
+
+    # additional processing
+    df.family_history = pd.get_dummies(df.family_history).Present
+
     df = df.convert_objects(convert_numeric=True)
     df.dropna(inplace=True)
-    features = df.drop(response, axis=1)
-    response = df[response]
+    features = df.drop(response_label, axis=1)
+    response = df[response_label]
     return features, response, df
 
 
@@ -444,10 +448,15 @@ def main():
     all_features_df = all_features(f, r, tuning)
     single_feature_df = single_feature(f, r, tuning)
     double_feature_df = double_feature(f, r, tuning)
+    
     # trimmed feature set for multi
     # get new trimmed feature set
-    dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
-    trimmed_features = f.drop(dropping, axis=1)
+    # dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
+    # trimmed_features = f.drop(dropping, axis=1)
+
+    # no trimmed features
+    trimmed_features = f
+    
     multi_feature_df = multi_feature(trimmed_features, r, tuning)
 
     combined_df = all_features_df.append(multi_feature_df)
@@ -469,11 +478,12 @@ def main():
 
 # run program on custom data
 estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-feature_labels = ['words', 'words']
-response_label = 'diagnosis'
-data_file = 'standford.csv'
+column_labels = ['systolic_bp', 'tobacco_use', 'ldl_cholesterol', 'abdominal_adiposity', 'family_history', 'type_a', 'overall_obesity', 'alcohol_use', 'age', 'heart_disease']
+response_label = 'heart_disease'
+data_file = 'stanford_heart_disease.csv'
 header = True
-f, r, data = data_processor(feature_labels, resonse_label, data_file, header)
+index = True
+f, r, data = data_processor(column_labels, response_label, data_file, header, index)
 plots = False
 main()
 
