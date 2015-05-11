@@ -9,9 +9,13 @@ from collections import defaultdict, Counter
 import pickle
 from prettytable import PrettyTable
 import itertools
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 from sklearn.feature_selection import RFE
 from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.cross_validation import train_test_split
 
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -94,10 +98,41 @@ def load_pickle(pickle):
     return df
 
 
-def make_plots():
-    # colormap
-    # multi plot for roc curve
-    pass
+def make_plot(X_train, y_train, X, y, test_data, model, model_name, features, response):
+    feature = X.columns
+    f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
+    sns.regplot(X[feature[4]], y, test_data, ax=ax1)
+    sns.boxplot(X[feature[4]], y, color="Blues_r", ax=ax2)
+    model.fit(X_train, y_train)
+    sns.residplot(X[feature[4]], (model.predict(X) - y) ** 2, color="indianred", lowess=True, ax=ax3)
+    if model_name is 'linear':
+        sns.interactplot(X[feature[3]], X[feature[4]], y, ax=ax4, filled=True, scatter_kws={"color": "dimgray"}, contour_kws={"alpha": .5})
+    elif model_name is 'logistic':
+        pal = sns.blend_palette(["#4169E1", "#DFAAEF", "#E16941"], as_cmap=True)
+        levels = np.linspace(0, 1, 11)
+        sns.interactplot(X[feature[3]], X[feature[4]], y, levels=levels, cmap=pal, logistic=True)
+    else:
+        pass
+    ax1.set_title('Regression')
+    ax2.set_title(feature[4]+' Value')
+    ax3.set_title(feature[4]+' Residuals')
+    ax4.set_title('Two-value Interaction')
+    f.tight_layout()
+    plt.savefig(model_name+'_'+feature[4], bbox_inches='tight')
+
+    # Multi-variable correlation significance level
+    f, ax = plt.subplots(figsize=(10, 10))
+    cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
+                              "#FFE6F8", "#C71585", "#8B0000"], as_cmap=True)
+    sns.corrplot(test_data, annot=False, diag_names=False, cmap=cmap)
+    ax.grid(False)
+    ax.set_title('Multi-variable correlation significance level')
+    plt.savefig(model_name+'_multi-variable_correlation', bbox_inches='tight')
+
+    # complete coefficient plot - believe this is only for linear regression
+    sns.coefplot("diagnosis ~ "+' + '.join(features), test_data, intercept=True)
+    plt.xticks(rotation='vertical')
+    plt.savefig(model_name+'_coefficient_effects', bbox_inches='tight')
 
 
 def make_model(model_data_file, feature_list, est):
@@ -203,14 +238,14 @@ def save_pickle(data, filename):
 # pickle = 'combined_df2015-05-06 23:18:19.950979.pickle'
 # recover_pickle(pickle, filename)
 
-# get max evaluators
-df = load_pickle('stanford_final.pickle')
-tuning='Accuracy'
-max_accuracy = max_scores(df, tuning)
-max_accuracy.to_csv('stanford_max_accuracy.csv')
-max_accuracy.to_pickle('stanford_max_accuracy.pickle')
-max_accuracy.reset_index(inplace=True)
-pretty_print_sorted(max_accuracy, 'Accuracy')
+# # get max evaluators
+# df = load_pickle('stanford_final.pickle')
+# tuning='Accuracy'
+# max_accuracy = max_scores(df, tuning)
+# max_accuracy.to_csv('stanford_max_accuracy.csv')
+# max_accuracy.to_pickle('stanford_max_accuracy.pickle')
+# max_accuracy.reset_index(inplace=True)
+# pretty_print_sorted(max_accuracy, 'Accuracy')
 
 # # comparing trimming methods
 # features, response, df = get_sample_dataset()
@@ -230,3 +265,10 @@ pretty_print_sorted(max_accuracy, 'Accuracy')
 # best_estimators = load_pickle('cleveland_max_accuracy.pickle')
 # interested_features = ['age', 'resting_bp', 'chest_pain']
 # make_prediction(data_file, best_estimators, interested_features, response)
+
+# # make plots
+# features, response, df = get_sample_dataset()
+# model = LogisticRegression()
+# model_name = 'logistic'
+# X_train, X_test, y_train, y_test, train_data, test_data = train_test_split(features, response, df)
+# make_plot(X_train, y_train, X_test, y_test, test_data, model, model_name, features, 'diagnosis')

@@ -598,8 +598,29 @@ model.fit(features[['age', 'sex', 'chest_pain', 'cholesterol']], response)
 model.predict([67,1,4,200])
 
 
-# In[761]:
+# In[762]:
 
 df12 = pd.DataFrame.from_csv('stanford_heart_disease.csv')
 df12.dtypes
+
+
+# In[767]:
+
+sns.set(style="darkgrid")
+pal = dict(male="#6495ED", female="#F08080")
+g = sns.lmplot('sex', 'diagnosis', col="sex", hue="sex", data=df,
+               palette=pal, y_jitter=.02, logistic=True)
+g.set(xlim=(0, 80), ylim=(-.05, 1.05))
+plt.savefig('coefficient_effects', bbox_inches='tight')
+
+
+# In[774]:
+
+sns.set(style="ticks")
+g = sns.factorplot(x="age", y="diagnosis", col="sex", hue="chest_pain", data=df)
+
+
+# In[ ]:
+
+
 

@@ -7,7 +7,6 @@ import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import statsmodels.formula.api as smf
 import datetime
 from collections import defaultdict
@@ -402,42 +401,6 @@ def sample_size_learning_curve(model, features, response):
     plt.legend()
 
 
-def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'):
-    feature = X.columns
-    f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
-    sns.regplot(X[feature[4]], y, test_data, ax=ax1)
-    sns.boxplot(X[feature[4]], y, color="Blues_r", ax=ax2)
-    sns.residplot(X[feature[4]], (model.predict(X) - y) ** 2, color="indianred", lowess=True, ax=ax3)
-    if model_name is 'linear':
-        sns.interactplot(X[feature[3]], X[feature[4]], y, ax=ax4, filled=True, scatter_kws={"color": "dimgray"}, contour_kws={"alpha": .5})
-    elif model_name is 'logistic':
-        pal = sns.blend_palette(["#4169E1", "#DFAAEF", "#E16941"], as_cmap=True)
-        levels = np.linspace(0, 1, 11)
-        sns.interactplot(X[feature[3]], X[feature[4]], y, levels=levels, cmap=pal, logistic=True)
-    else:
-        pass
-    ax1.set_title('Regression')
-    ax2.set_title(feature[4]+' Value')
-    ax3.set_title(feature[4]+' Residuals')
-    ax4.set_title('Two-value Interaction')
-    f.tight_layout()
-    plt.savefig(model_name+'_'+feature[4], bbox_inches='tight')
-
-    # Multi-variable correlation significance level
-    f, ax = plt.subplots(figsize=(10, 10))
-    cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
-                              "#FFE6F8", "#C71585", "#8B0000"], as_cmap=True)
-    sns.corrplot(test_data, annot=False, diag_names=False, cmap=cmap)
-    ax.grid(False)
-    ax.set_title('Multi-variable correlation significance level')
-    plt.savefig(model_name+'_multi-variable_correlation', bbox_inches='tight')
-
-    # complete coefficient plot - believe this is only for linear regression
-    sns.coefplot("diagnosis ~ "+' + '.join(features), test_data, intercept=True)
-    plt.xticks(rotation='vertical')
-    plt.savefig(model_name+'_coefficient_effects', bbox_inches='tight')
-
-
 def main():
     # # set tuning below to an evaluation metric to just judge that.
     # # set it to False to have it evaluate all metrics
@@ -465,11 +428,6 @@ def main():
     combined_df = combined_df.append(single_feature_df)
     save_dataframe(combined_df, 'combined_df')
 
-    if plots:
-        model = 0
-        model_name = 'linear'
-        response = 'diagnosis'
-        make_plot(X_test, y_test, model, test_data, model_name, features, response)
 
 # # run program on sample data
 # estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
@@ -487,7 +445,6 @@ data_file = 'stanford_heart_disease.csv'
 header = True
 index = True
 f, r, data = data_processor(column_labels, response_label, data_file, header, index)
-plots = False
 main()
 
 # if __name__ == '__main__':
@@ -496,12 +453,10 @@ main()
 #     except:
 #         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
 #         f, r, data = get_sample_dataset()
-#         plots = True
 #     else:
 #         estimators = sys.argv[1]
 #         feature_labels = sys.argv[2]
 #         response_label = sys.argv[3]
 #         data_file = sys.arvg[4]
-#         plots = sys.argv[5]
 #         # f, r = data_processor(feature_labels, response_label, data_file)
 #     main()
