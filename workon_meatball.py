@@ -591,9 +591,15 @@ x=max_accuracy.loc['age'].Accuracy_best
 x
 
 
-# In[758]:
+# In[759]:
 
 model = SVC(**x)
 model.fit(features[['age', 'sex', 'chest_pain', 'cholesterol']], response)
 model.predict([67,1,4,200])
+
+
+# In[761]:
+
+df12 = pd.DataFrame.from_csv('stanford_heart_disease.csv')
+df12.dtypes
 

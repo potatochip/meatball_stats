@@ -1,6 +1,7 @@
 '''
 "So easy, an undergrad could do it!"
 '''
+
 from __future__ import division
 import sys
 import pandas as pd
@@ -328,7 +329,7 @@ def linear(features, response, train, test,):
     '''
     tuning = 'accuracy'
     linear_reg = LinearRegression()
-    parameters = {'normalize':[True, False]}
+    parameters = {'normalize': [True, False]}
     score, best_param, model = grid_squid(linear_reg, parameters, train, test, features, response, 'Linear Regression', tuning)
     return {tuning: (score, best_param)}, model
     # implement foward selection for the number of variables
@@ -349,7 +350,7 @@ def logistic(features, response, train, test, tuning):
     Logistic regression.
     '''
     log_reg = LogisticRegression()
-    parameters = {'penalty':['l1','l2'], 'solver':['liblinear','lbfgs','newton-cg']}
+    parameters = {'penalty': ['l1', 'l2'], 'solver': ['liblinear', 'lbfgs', 'newton-cg']}
     scores_dict, model = grid_squid(log_reg, parameters, train, test, features, response, 'Logistic Regression', tuning)
     return scores_dict, model
 
@@ -438,25 +439,25 @@ def make_plot(X, y, model, test_data, model_name, features, response='diagnosis'
 
 
 def main():
-    # ###### set tuning below to an evaluation metric to just judge that.
-    # set it to False to have it evaluate all metrics
+    # # set tuning below to an evaluation metric to just judge that.
+    # # set it to False to have it evaluate all metrics
     tuning = 'accuracy'
     # tuning = False
 
-    # evaluates all together, all alone, and all pairs for all features.
-    # then evaluates for all combinations for a trimmed set of features (see parmesan).
+    # # evaluates all together, all alone, and all pairs for all features.
+    # # then evaluates for all combinations for a trimmed set of features (see parmesan).
     all_features_df = all_features(f, r, tuning)
     single_feature_df = single_feature(f, r, tuning)
     double_feature_df = double_feature(f, r, tuning)
-    
-    # trimmed feature set for multi
-    # get new trimmed feature set
+
+    # # trimmed feature set for multi
+    # # get new trimmed feature set
     # dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
     # trimmed_features = f.drop(dropping, axis=1)
 
     # no trimmed features
     trimmed_features = f
-    
+
     multi_feature_df = multi_feature(trimmed_features, r, tuning)
 
     combined_df = all_features_df.append(multi_feature_df)
@@ -472,13 +473,15 @@ def main():
 
 # # run program on sample data
 # estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-# f, r, data = get_sample_dataset()   
+# f, r, data = get_sample_dataset()
 # plots = False
 # main()
 
 # run program on custom data
 estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-column_labels = ['systolic_bp', 'tobacco_use', 'ldl_cholesterol', 'abdominal_adiposity', 'family_history', 'type_a', 'overall_obesity', 'alcohol_use', 'age', 'heart_disease']
+column_labels = ['systolic_bp', 'tobacco_use', 'ldl_cholesterol', 'abdominal_adiposity',
+                    'family_history', 'type_a', 'overall_obesity', 'alcohol_use', 'age',
+                    'heart_disease']
 response_label = 'heart_disease'
 data_file = 'stanford_heart_disease.csv'
 header = True
@@ -492,7 +495,7 @@ main()
 #         sys.argv[1]
 #     except:
 #         estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-#         f, r, data = get_sample_dataset()   
+#         f, r, data = get_sample_dataset()
 #         plots = True
 #     else:
 #         estimators = sys.argv[1]

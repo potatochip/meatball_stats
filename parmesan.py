@@ -1,3 +1,7 @@
+'''
+meatball helper module
+'''
+
 import pandas as pd
 from prettytable import PrettyTable
 import datetime
@@ -199,14 +203,14 @@ def save_pickle(data, filename):
 # pickle = 'combined_df2015-05-06 23:18:19.950979.pickle'
 # recover_pickle(pickle, filename)
 
-# # get max evaluators
-# df = load_pickle('cleveland_final.pickle')
-# tuning='Accuracy'
-# max_accuracy = max_scores(df, tuning)
-# max_accuracy.to_csv('cleveland_max_accuracy.csv')
-# max_accuracy.to_pickle('cleveland_max_accuracy.pickle')
-# max_accuracy.reset_index(inplace=True)
-# pretty_print_sorted(max_accuracy, 'Accuracy')
+# get max evaluators
+df = load_pickle('stanford_final.pickle')
+tuning='Accuracy'
+max_accuracy = max_scores(df, tuning)
+max_accuracy.to_csv('stanford_max_accuracy.csv')
+max_accuracy.to_pickle('stanford_max_accuracy.pickle')
+max_accuracy.reset_index(inplace=True)
+pretty_print_sorted(max_accuracy, 'Accuracy')
 
 # # comparing trimming methods
 # features, response, df = get_sample_dataset()
@@ -221,8 +225,8 @@ def save_pickle(data, filename):
 # features, response, df = get_sample_dataset()
 # talking_to_trees(features, response)
 
-# make prediction based on best estimator for cleveland data
-f, response, data_file = get_sample_dataset()
-best_estimators = load_pickle('cleveland_max_accuracy.pickle')
-interested_features = ['age', 'resting_bp', 'chest_pain']
-make_prediction(data_file, best_estimators, interested_features, response)
+# # make prediction based on best estimator for cleveland data
+# f, response, data_file = get_sample_dataset()
+# best_estimators = load_pickle('cleveland_max_accuracy.pickle')
+# interested_features = ['age', 'resting_bp', 'chest_pain']
+# make_prediction(data_file, best_estimators, interested_features, response)
