@@ -29,13 +29,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.learning_curve import learning_curve
-from sklearn.metrics import r2_score
-from sklearn.metrics import roc_curve
-from sklearn.metrics import roc_auc_score
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
 
 # print dataframe to screen with enough room
 # pd.set_option('display.height', 1000)
@@ -63,6 +56,7 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     # changing diagnosis from 0-4 scale to just 0 or 1
     df.diagnosis = df.diagnosis.apply(lambda x: 0 if x == 0 else 1)
     # df.dropna(inplace=True)
+    # dropping from each feature grab instead to minimize sample loss
 
     features = df.drop('diagnosis', axis=1).columns
     response = 'diagnosis'
@@ -81,6 +75,8 @@ def data_processor(column_labels, response_label, data_file, header, index):
 
     df = df.convert_objects(convert_numeric=True)
     # df.dropna(inplace=True)
+    # dropping from each feature grab instead to minimize sample loss
+
     features = df.drop(response_label, axis=1).columns.tolist()
     response = response_label
     return features, response, df
@@ -113,7 +109,7 @@ def create_estimator_database(features, response, caller, tuning):
     features = StandardScaler().fit_transform(features)
     X_train, X_test, y_train, y_test = train_test_split(features, response, test_size=0.3)
     columns = ['Feature', 'Estimator', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUC',
-                'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best']
+                'Accuracy_best', 'Precision_best', 'Recall_best', 'F1_best', 'AUC_best', 'sample_size']
     estimator_df = pd.DataFrame(columns=[columns])
 
     # # for testing. remove next line after finished
@@ -121,11 +117,13 @@ def create_estimator_database(features, response, caller, tuning):
 
     train = [X_train, y_train]
     test = [X_test, y_test]
+    sample_size = features.shape
+    print(sample_size)
     for estimator in estimators:
         if estimator == 'linear':
             scores_dict, model = linear(features, response, train, test)
             score, best = scores_dict['accuracy']
-            evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, 0, 0, 0, 0]
+            evaluation_metrics = [caller, estimator, score, 0, 0, 0, 0, best, 0, 0, 0, 0, sample_size]
         elif estimator == 'knn':
             scores_dict, model = knn(features, response, train, test, tuning)
         elif estimator == 'logistic':
@@ -150,7 +148,7 @@ def create_estimator_database(features, response, caller, tuning):
             auc, auc_best = scores_dict.get('roc_auc', (0, 0))
             evaluation_metrics = [caller, estimator, accuracy, precision, recall, f1,
                                     auc, accuracy_best, precision_best, recall_best,
-                                    f1_best, auc_best]
+                                    f1_best, auc_best, sample_size]
         estimator_df = estimator_df.append(pd.DataFrame([evaluation_metrics], columns=columns))
     return estimator_df
 
