@@ -424,7 +424,7 @@ def main():
 
     # # trimmed feature set for multi
     # # get new trimmed feature set
-    # dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
+    # dropping = ['ecg', 'blood_sugar', 'sex']
     # trimmed_data = data.drop(dropping, axis=1)
 
     # no trimmed features

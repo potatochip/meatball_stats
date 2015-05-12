@@ -53,6 +53,24 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     return features, response, df
 
 
+def data_processor(column_labels, response_label, data_file, header, index):
+    if header and index:
+        df = pd.DataFrame.from_csv(data_file, header=0, index_col=0)
+    else:
+        df = pd.DataFrame.from_csv(data_file, header=-1, index_col=None)
+    df.columns = column_labels
+
+    # # additional processing
+    # df.family_history = pd.get_dummies(df.family_history).Present
+
+    df = df.convert_objects(convert_numeric=True)
+    df.dropna(inplace=True)
+
+    features = df.drop(response_label, axis=1)
+    response = df[response_label]
+    return features, response, df
+
+
 def recover_pickle(pickle, filename):
     dt = str(datetime.datetime.now())
     filename = filename + '-' + dt
@@ -256,9 +274,16 @@ def save_pickle(data, filename):
 # data = (tree_features, response)
 # save_pickle(data, 'tree_features.csv')
 
-# # rank important features
-# features, response, df = get_sample_dataset()
-# talking_to_trees(features, response)
+# rank important features
+column_labels = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol',
+                  'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina',
+                  'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
+response_label = 'diagnosis'
+data_file = 'all_processed_data.csv'
+header = True
+index = True
+features, response, df = data_processor(column_labels, response_label, data_file, header, index)
+talking_to_trees(features, response)
 
 # # make prediction based on best estimator for cleveland data
 # f, response, data_file = get_sample_dataset()
