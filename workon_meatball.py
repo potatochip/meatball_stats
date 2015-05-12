@@ -620,7 +620,44 @@ sns.set(style="ticks")
 g = sns.factorplot(x="age", y="diagnosis", col="sex", hue="chest_pain", data=df)
 
 
-# In[ ]:
+# In[789]:
+
+all_df = pd.DataFrame.from_csv('processed.cleveland.data', header=-1, index_col=None)
+
+
+# In[811]:
+
+hungarian = pd.DataFrame.from_csv('processed.hungarian.data', header=-1, index_col=None)
+switzerland = pd.DataFrame.from_csv('processed.switzerland.data', header=-1, index_col=None)
+va = pd.DataFrame.from_csv('processed.va.data', header=-1, index_col=None)
+
+
+# In[797]:
+
+all_df = all_df.append(hungarian).append(switzerland).append(va)
+
+
+# In[799]:
+
+all_df.describe()
+
+
+# In[831]:
+
+all_df.columns = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol', 'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina', 'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
+all_df.index.names = ['patient']
+all_df = all_df.convert_objects(convert_numeric=True)
+all_df.diagnosis = all_df.diagnosis.apply(lambda x: 0 if x == 0 else 1)
+
+
+
+
+# In[833]:
+
+all_df.to_csv('all_processed_data.csv')
+
+
+# In[784]:
 
 
 

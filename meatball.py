@@ -62,10 +62,10 @@ def get_sample_dataset(dataset='processed.cleveland.data'):
     df = df.convert_objects(convert_numeric=True)
     # changing diagnosis from 0-4 scale to just 0 or 1
     df.diagnosis = df.diagnosis.apply(lambda x: 0 if x == 0 else 1)
-    df.dropna(inplace=True)
+    # df.dropna(inplace=True)
 
-    features = df.drop('diagnosis', axis=1)
-    response = df.diagnosis
+    features = df.drop('diagnosis', axis=1).columns
+    response = 'diagnosis'
     return features, response, df
 
 
@@ -76,13 +76,13 @@ def data_processor(column_labels, response_label, data_file, header, index):
         df = pd.DataFrame.from_csv(data_file, header=-1, index_col=None)
     df.columns = column_labels
 
-    # additional processing
-    df.family_history = pd.get_dummies(df.family_history).Present
+    # # additional processing
+    # df.family_history = pd.get_dummies(df.family_history).Present
 
     df = df.convert_objects(convert_numeric=True)
-    df.dropna(inplace=True)
-    features = df.drop(response_label, axis=1)
-    response = df[response_label]
+    # df.dropna(inplace=True)
+    features = df.drop(response_label, axis=1).columns.tolist()
+    response = response_label
     return features, response, df
 
 
@@ -155,30 +155,33 @@ def create_estimator_database(features, response, caller, tuning):
     return estimator_df
 
 
-def all_features(features, response, tuning):
+def all_features(data, f, r, tuning):
+    features, response = cleaner(data, f, r)
     estimator_df = create_estimator_database(features, response, 'all', tuning)
     return estimator_df
 
 
-def single_feature(features, response, tuning):
+def single_feature(data, f, r, tuning):
     single_feature_df = pd.DataFrame()
-    for i in features.columns:
+    for i in f:
         print("Working on: {0}".format(i))
+        features, response = cleaner(data, [i], r)
         single_feature = features[[i]]
         estimator_df = create_estimator_database(single_feature, response, i, tuning)
         single_feature_df = single_feature_df.append(estimator_df)
     return single_feature_df
 
 
-def double_feature(features, response, tuning):
+def double_feature(data, f, r, tuning):
     feature_list = []
     count = 0
     for num in range(2, 3):
-        feature_list.extend([list(i) for i in itertools.combinations(features, num)])
+        feature_list.extend([list(i) for i in itertools.combinations(f, num)])
 
     double_feature_df = pd.DataFrame()
     for i in feature_list:
         print("Working on: {0}".format(i))
+        features, response = cleaner(data, i, r)
         multi_f = features[i]
         caller = " : ".join(i)
         estimator_df = create_estimator_database(multi_f, response, caller, tuning)
@@ -190,19 +193,27 @@ def double_feature(features, response, tuning):
     return double_feature_df
 
 
-def multi_feature(features, response, tuning):
+def cleaner(data, feature_labels, response_label):
+    clean = data[feature_labels + [response_label]].dropna()
+    features = clean.drop(response_label, axis=1)
+    response = clean[response_label]
+    return features, response
+
+
+def multi_feature(data, f, r, tuning):
     # uses a trimmed feature set.
     # this is going to take forever. won't work for anything more than ten features.
     # combination_size is the upper limit so will not make combinations at that size but will make all the combinations below it
     feature_list = []
     count = 0
-    for num in range(3, len(features.columns)):
+    for num in range(3, len(f)):
     # for num in range(2, combination_size):
-        feature_list.extend([list(i) for i in itertools.combinations(features, num)])
+        feature_list.extend([list(i) for i in itertools.combinations(f, num)])
 
     multi_feature_df = pd.DataFrame()
     for i in feature_list:
         print("Working on: {0}".format(i))
+        features, response = cleaner(data, i, r)
         multi_f = features[i]
         caller = " : ".join(i)
         estimator_df = create_estimator_database(multi_f, response, caller, tuning)
@@ -409,19 +420,19 @@ def main():
 
     # # evaluates all together, all alone, and all pairs for all features.
     # # then evaluates for all combinations for a trimmed set of features (see parmesan).
-    all_features_df = all_features(f, r, tuning)
-    single_feature_df = single_feature(f, r, tuning)
-    double_feature_df = double_feature(f, r, tuning)
+    all_features_df = all_features(data, f, r, tuning)
+    single_feature_df = single_feature(data, f, r, tuning)
+    double_feature_df = double_feature(data, f, r, tuning)
 
     # # trimmed feature set for multi
     # # get new trimmed feature set
     # dropping = ['ecg', 'blood_sugar', 'sex', 'slope']
-    # trimmed_features = f.drop(dropping, axis=1)
+    # trimmed_data = data.drop(dropping, axis=1)
 
     # no trimmed features
-    trimmed_features = f
+    trimmed_data = data
 
-    multi_feature_df = multi_feature(trimmed_features, r, tuning)
+    multi_feature_df = multi_feature(trimmed_data, f, r, tuning)
 
     combined_df = all_features_df.append(multi_feature_df)
     combined_df = combined_df.append(double_feature_df)
@@ -432,20 +443,31 @@ def main():
 # # run program on sample data
 # estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
 # f, r, data = get_sample_dataset()
-# plots = False
 # main()
 
-# run program on custom data
+# # run program on custom data. additional code commented out in data processor
+# estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
+# column_labels = ['systolic_bp', 'tobacco_use', 'ldl_cholesterol', 'abdominal_adiposity',
+#                     'family_history', 'type_a', 'overall_obesity', 'alcohol_use', 'age',
+#                     'heart_disease']
+# response_label = 'heart_disease'
+# data_file = 'stanford_heart_disease.csv'
+# header = True
+# index = True
+# f, r, data = data_processor(column_labels, response_label, data_file, header, index)
+# main()
+
 estimators = ['linear', 'knn', 'logistic', 'gaussian', 'svc', 'decision_tree', 'random_forest']
-column_labels = ['systolic_bp', 'tobacco_use', 'ldl_cholesterol', 'abdominal_adiposity',
-                    'family_history', 'type_a', 'overall_obesity', 'alcohol_use', 'age',
-                    'heart_disease']
-response_label = 'heart_disease'
-data_file = 'stanford_heart_disease.csv'
+column_labels = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol',
+                  'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina',
+                  'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
+response_label = 'diagnosis'
+data_file = 'all_processed_data.csv'
 header = True
 index = True
 f, r, data = data_processor(column_labels, response_label, data_file, header, index)
 main()
+
 
 # if __name__ == '__main__':
 #     try:
@@ -457,6 +479,6 @@ main()
 #         estimators = sys.argv[1]
 #         feature_labels = sys.argv[2]
 #         response_label = sys.argv[3]
-#         data_file = sys.arvg[4]
+#         data_file = sys.argv[4]
 #         # f, r = data_processor(feature_labels, response_label, data_file)
 #     main()
