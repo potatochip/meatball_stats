@@ -256,14 +256,14 @@ def save_pickle(data, filename):
 # pickle = 'combined_df2015-05-06 23:18:19.950979.pickle'
 # recover_pickle(pickle, filename)
 
-# # get max evaluators
-# df = load_pickle('stanford_final.pickle')
-# tuning='Accuracy'
-# max_accuracy = max_scores(df, tuning)
-# max_accuracy.to_csv('stanford_max_accuracy.csv')
-# max_accuracy.to_pickle('stanford_max_accuracy.pickle')
-# max_accuracy.reset_index(inplace=True)
-# pretty_print_sorted(max_accuracy, 'Accuracy')
+# get max evaluators
+df = load_pickle('stanford_final.pickle')
+tuning='Accuracy'
+max_accuracy = max_scores(df, tuning)
+max_accuracy.to_csv('stanford_max_accuracy.csv')
+max_accuracy.to_pickle('stanford_max_accuracy.pickle')
+max_accuracy.reset_index(inplace=True)
+pretty_print_sorted(max_accuracy, 'Accuracy')
 
 # # comparing trimming methods
 # features, response, df = get_sample_dataset()
@@ -274,16 +274,16 @@ def save_pickle(data, filename):
 # data = (tree_features, response)
 # save_pickle(data, 'tree_features.csv')
 
-# rank important features
-column_labels = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol',
-                  'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina',
-                  'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
-response_label = 'diagnosis'
-data_file = 'all_processed_data.csv'
-header = True
-index = True
-features, response, df = data_processor(column_labels, response_label, data_file, header, index)
-talking_to_trees(features, response)
+# # rank important features
+# column_labels = ['age', 'sex', 'chest_pain', 'resting_bp', 'cholesterol',
+#                   'blood_sugar', 'ecg', 'max_hr', 'exercise_induced_angina',
+#                   'st_depression', 'slope', 'num_major_vessels', 'thal', 'diagnosis']
+# response_label = 'diagnosis'
+# data_file = 'all_processed_data.csv'
+# header = True
+# index = True
+# features, response, df = data_processor(column_labels, response_label, data_file, header, index)
+# talking_to_trees(features, response)
 
 # # make prediction based on best estimator for cleveland data
 # f, response, data_file = get_sample_dataset()
